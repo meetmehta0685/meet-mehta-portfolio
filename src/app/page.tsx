@@ -13,7 +13,8 @@ import {
   MapPin,
   FileText,
   Activity,
-  Cpu
+  Cpu,
+  Phone
 } from "lucide-react";
 import { GithubIcon, LinkedinIcon } from "./components/Icons";
 
@@ -511,6 +512,12 @@ export default function Home() {
                 className="text-foreground hover:text-accent font-semibold transition-editorial flex items-center gap-2"
               >
                 <Mail size={14} className="text-muted" /> mehtameet685@gmail.com
+              </a>
+              <a 
+                href="tel:+918320907038" 
+                className="text-foreground hover:text-accent font-semibold transition-editorial flex items-center gap-2"
+              >
+                <Phone size={14} className="text-muted" /> +91 8320907038
               </a>
               <a 
                 href="https://linkedin.com/in/meet-mehta685" 

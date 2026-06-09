@@ -364,7 +364,7 @@ export default function ProjectCaseStudyClient({ project }: { project: Project }
       <footer className="border-t border-border-custom py-6 mt-12">
         <div className="max-w-5xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-muted">
           <div>© 2026 Meet Mehta. All rights reserved.</div>
-          <div>ADANI UNIVERSITY B.TECH (AI-ML)</div>
+          <div>ADANI UNIVERSITY B.TECH CSE(AI-ML)</div>
         </div>
       </footer>
     </div>

@@ -544,7 +544,7 @@ export default function Home() {
               © 2026 Meet Mehta. All rights reserved.
             </div>
             <div className="uppercase tracking-widest font-semibold text-[10px]">
-              Adani University B.Tech (AI-ML)
+              Adani University B.Tech CSE(AI-ML)
             </div>
           </div>
         </section>

@@ -39,8 +39,8 @@ export const projects: Project[] = [
       { label: "Active Capacity", value: "42 Patients" },
       { label: "Wait-Time Reduction", value: "35%" }
     ],
-    githubUrl: "https://github.com/meetmehta0685",
-    liveUrl: "https://github.com/meetmehta0685",
+    githubUrl: "https://github.com/meetmehta0685/AurumQMS",
+    liveUrl: "https://aurum-qms.vercel.app",
     caseStudy: {
       overview: "The Hospital Queue Management System is a real-time, event-driven clinic orchestration platform. It replaces outdated physical whiteboards and tokens with a highly synchronized web system that keeps patients, receptionist staff, and consulting doctors in lockstep regarding appointment sequences and wait estimates.",
       problem: "Medium-scale clinics and emergency triages frequently experience chaotic lobby bottlenecks. Physical clipboards and static displays fail to update when doctors run behind or emergency triage changes priority. Patients are left with zero status visibility, and receptionist staff are constantly interrupted by questions about estimated wait times.",
@@ -69,8 +69,8 @@ export const projects: Project[] = [
       { label: "Pickup Match Time", value: "<3 mins" },
       { label: "Food Redistributed", value: "450+ kg" }
     ],
-    githubUrl: "https://github.com/meetmehta0685",
-    liveUrl: "https://github.com/meetmehta0685",
+    githubUrl: "https://github.com/meetmehta0685/food-ngo",
+    liveUrl: "https://food-ngo-beta.vercel.app",
     caseStudy: {
       overview: "Harvest Relay is a logistics mapping and resource redistribution platform designed to bridge the gap between food surplus (restaurants, catering halls) and food insecurity (non-profits, shelters). It optimizes the volunteer courier pipeline using proximity algorithms to ensure food reaches kitchens before spoilage.",
       problem: "Traditional food banks are equipped for non-perishable canned goods, but fail to capture fresh restaurant surplus. Because fresh food spoils within hours, a decentralized, instant dispatcher is required to match donor kitchens with nearby volunteers who can transport meals immediately.",

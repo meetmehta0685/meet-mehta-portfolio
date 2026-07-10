@@ -196,7 +196,7 @@ export default function Home() {
                 <div className="flex flex-col gap-2 border-l border-border-custom pl-4">
                   <span className="font-bold uppercase tracking-wider text-muted">CURRENT FOCUS</span>
                   <p className="text-muted/80 leading-relaxed font-light">
-                    Developing workflow orchestration tools like Tyroo AI and mastering spatial database indexing pipelines.
+                    Developing a placement preparation portal for students integrated with AI, and building responsive layouts.
                   </p>
                 </div>
                 <div className="flex flex-col gap-2 border-l border-border-custom pl-4">
@@ -238,53 +238,16 @@ export default function Home() {
                   </span>
                 </div>
 
-                {/* Terminal Mockup Image Block (border-radius 0, 16:7 aspect ratio, custom padding) */}
-                <div className="w-full aspect-[16/7] bg-[#0E0E0E] border border-border-custom/20 flex flex-col justify-between p-4 sm:p-6 text-[10px] text-[#E0DDD8] select-none rounded-none overflow-hidden relative">
-                  <div className="flex justify-between border-b border-[#E0DDD8]/10 pb-2 text-[9px] font-bold text-muted">
-                    <span>SYSTEM: {project.title.toUpperCase()}</span>
-                    <span className="text-accent">STATUS // ACTIVE_RUN</span>
-                  </div>
-                  
-                  {/* Interactive Inner Content that scales on hover */}
-                  <div className="flex-grow flex flex-col justify-center gap-1 sm:gap-2 font-serif text-lg sm:text-2xl text-foreground text-white transform transition-all duration-500 group-hover:scale-[1.02]">
-                    <span>{project.title}</span>
-                    <span className="font-mono text-[10px] sm:text-11px text-accent font-light">
-                      &gt; {project.slug === "hospital-qms" ? "Realtime State Synchronization" : "Geolocation Proximity Engine"}
-                    </span>
-                  </div>
-
-                  <div className="border-t border-[#E0DDD8]/10 pt-2 flex justify-between text-[9px] text-muted">
-                    <span>{project.slug === "hospital-qms" ? "[Active Patients: 42]" : "[NGO Nodes: 18]"}</span>
-                    <span>{project.slug === "hospital-qms" ? "[Refresh: 50ms]" : "[Active Donors: 8]"}</span>
-                  </div>
-                </div>
-
-                {/* Narrative Details */}
                 <div className="flex flex-col gap-4 text-xs font-light">
-                  <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
-                    <div className="md:col-span-8 flex flex-col gap-3 font-light text-foreground/90 leading-relaxed text-[13px]">
-                      <p>
-                        <strong className="font-semibold block text-xs uppercase tracking-wider text-muted mb-0.5">THE PROBLEM</strong>
-                        {project.problemSolved}
-                      </p>
-                      <p>
-                        <strong className="font-semibold block text-xs uppercase tracking-wider text-muted mb-0.5">KEY ACHIEVEMENT</strong>
-                        {project.keyAchievements[0]}
-                      </p>
-                    </div>
-
-                    {/* Proximity Metrics Display inside Card */}
-                    <div className="md:col-span-4 border-l border-border-custom/40 pl-4 flex flex-col gap-3">
-                      <strong className="font-semibold text-[10px] uppercase tracking-wider text-muted">KEY PERFORMANCE</strong>
-                      <div className="flex flex-col gap-2">
-                        {project.metrics.slice(0, 2).map((metric, i) => (
-                          <div key={i} className="flex flex-col">
-                            <span className="text-lg font-serif font-bold text-foreground">{metric.value}</span>
-                            <span className="text-[9px] uppercase text-muted tracking-wider">{metric.label}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
+                  <div className="flex flex-col gap-3 font-light text-foreground/90 leading-relaxed text-[13px]">
+                    <p>
+                      <strong className="font-semibold block text-xs uppercase tracking-wider text-muted mb-0.5">THE PROBLEM</strong>
+                      {project.problemSolved}
+                    </p>
+                    <p>
+                      <strong className="font-semibold block text-xs uppercase tracking-wider text-muted mb-0.5">KEY ACHIEVEMENT</strong>
+                      {project.keyAchievements[0]}
+                    </p>
                   </div>
 
                   {/* Technologies Badges */}
@@ -299,14 +262,18 @@ export default function Home() {
                     ))}
                   </div>
 
-                  {/* Case Study Actions */}
+                  {/* Project Actions */}
                   <div className="flex items-center gap-4 pt-3 text-[11px] font-semibold tracking-wider">
-                    <Link 
-                      href={`/projects/${project.slug}`}
-                      className="text-accent hover:underline flex items-center gap-1 border border-accent/20 bg-accent/5 px-4 py-2 hover:bg-accent hover:text-background transition-all"
-                    >
-                      READ CASE STUDY <ArrowUpRight size={12} />
-                    </Link>
+                    {project.liveUrl && (
+                      <a 
+                        href={project.liveUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-accent hover:underline flex items-center gap-1 border border-accent/20 bg-accent/5 px-4 py-2 hover:bg-accent hover:text-background transition-all"
+                      >
+                        LIVE SITE <ArrowUpRight size={12} />
+                      </a>
+                    )}
                     <a 
                       href={project.githubUrl} 
                       target="_blank" 
@@ -388,18 +355,21 @@ export default function Home() {
             <div className="absolute left-[3px] top-[14px] w-[7px] h-[7px] rounded-full border border-foreground bg-background" />
             
             <div className="flex flex-col gap-1">
-              <div className="text-[11px] text-muted font-normal">
-                MAY 2026 – PRESENT
+              <div className="text-[11px] text-muted font-normal flex justify-between items-center sm:w-full">
+                <span>MAY 2026 – PRESENT</span>
+                <span className="text-[10px] uppercase font-mono tracking-wider flex items-center gap-1 text-right"><MapPin size={10} /> Vadodara, Gujarat</span>
               </div>
               <h3 className="font-serif text-lg font-bold text-foreground leading-snug">
-                Appendo Consulting and Services
+                Appendo Consulting and Service
               </h3>
-              <div className="text-[10px] font-mono tracking-[0.08em] text-accent uppercase mb-1">
-                UI/UX Design Intern
+              <div className="text-[10px] font-mono tracking-[0.08em] text-accent uppercase mb-2">
+                UI/UX Intern
               </div>
-              <p className="text-[13px] leading-relaxed text-foreground/85 font-light">
-                Translate wireframes into responsive React components using Tailwind. Lead usability feedback sessions to iterate on frontend layouts and optimize customer conversion.
-              </p>
+              <ul className="text-[13px] leading-relaxed text-foreground/85 font-light list-disc list-outside pl-4 flex flex-col gap-2 font-mono">
+                <li>Designing and developing intuitive user interfaces and seamless user experiences for a new, interactive mock interview platform.</li>
+                <li>Creating wireframes, interactive prototypes, and responsive layouts to ensure accessibility and consistent design across multiple devices.</li>
+                <li>Building Tyroo Placement OS, a full-stack placement management platform, developing student dashboards, drive calendar, and placement analytics using Hono, Supabase, and Prisma.</li>
+              </ul>
             </div>
           </div>
         </section>
@@ -482,7 +452,7 @@ export default function Home() {
               <div className="flex flex-col gap-1 sm:col-span-2">
                 <span className="font-bold uppercase tracking-wider text-[10px] text-accent">ACTIVE BUILD</span>
                 <span className="text-[#E0DDD8] font-medium">
-                  AI platform providing internships and job listings (bridging learnings and jobs, similar to Coursera + Internshala)
+                  Placement preparation portal for students integrated with AI (building mock interview and evaluation tools)
                 </span>
               </div>
             </div>

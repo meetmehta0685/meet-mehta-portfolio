@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Playfair_Display, IBM_Plex_Mono } from "next/font/google";
+import { Playfair_Display, IBM_Plex_Mono, Outfit } from "next/font/google";
 import "./globals.css";
 import DotGridBackground from "./components/DotGridBackground";
 
@@ -13,6 +13,12 @@ const ibmPlexMono = IBM_Plex_Mono({
   variable: "--font-mono",
   subsets: ["latin"],
   weight: ["300", "400", "500", "700"],
+});
+
+const outfit = Outfit({
+  variable: "--font-sans",
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
@@ -29,7 +35,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${playfair.variable} ${ibmPlexMono.variable} h-full antialiased`}
+      className={`${playfair.variable} ${ibmPlexMono.variable} ${outfit.variable} h-full antialiased`}
       suppressHydrationWarning
     >
       <head>

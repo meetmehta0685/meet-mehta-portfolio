@@ -85,7 +85,7 @@ export default function Navbar() {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 h-[56px] flex items-center transition-all duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-50 h-[64px] flex items-center transition-all duration-300 ${
         isScrolled
           ? "bg-background/80 backdrop-blur-md border-b border-border-custom"
           : "bg-transparent border-b border-transparent"
@@ -95,7 +95,7 @@ export default function Navbar() {
         {/* LOGO / MONOGRAM */}
         <MotionLink
           href="/"
-          className="text-sm font-bold tracking-widest hover:text-accent transition-editorial flex items-center group/logo"
+          className="text-[13px] font-bold tracking-widest hover:text-accent transition-editorial flex items-center group/logo uppercase"
           onMouseEnter={handleMouseEnter}
           whileTap={{ scale: 0.97 }}
           transition={{ type: "spring", stiffness: 400, damping: 15 }}
@@ -106,28 +106,28 @@ export default function Navbar() {
 
 
         {/* NAVIGATION LINKS */}
-        <nav className="hidden sm:flex items-center gap-4 text-xs tracking-wider text-muted font-medium">
+        <nav className="hidden sm:flex items-center gap-5 text-[10.5px] tracking-wider text-muted-foreground font-semibold">
           <MotionLink 
             href="/#about" 
-            className="hover:text-foreground transition-editorial"
+            className="hover:text-foreground transition-editorial uppercase"
             whileTap={{ scale: 0.96 }}
             transition={{ type: "spring", stiffness: 400, damping: 15 }}
           >
             ABOUT
           </MotionLink>
-          <span className="select-none text-border-custom">•</span>
+          <span className="select-none text-border-custom/50">•</span>
           <MotionLink 
             href="/#work" 
-            className="hover:text-foreground transition-editorial"
+            className="hover:text-foreground transition-editorial uppercase"
             whileTap={{ scale: 0.96 }}
             transition={{ type: "spring", stiffness: 400, damping: 15 }}
           >
             WORK
           </MotionLink>
-          <span className="select-none text-border-custom">•</span>
+          <span className="select-none text-border-custom/50">•</span>
           <MotionLink 
             href="/#contact" 
-            className="hover:text-foreground transition-editorial"
+            className="hover:text-foreground transition-editorial uppercase"
             whileTap={{ scale: 0.96 }}
             transition={{ type: "spring", stiffness: 400, damping: 15 }}
           >
@@ -140,7 +140,7 @@ export default function Navbar() {
           {/* THEME TOGGLE */}
           <motion.button
             onClick={toggleTheme}
-            className="flex items-center justify-center w-8 h-8 border border-border-custom hover:bg-border-custom/20 transition-colors duration-200 text-foreground focus:outline-none cursor-pointer overflow-hidden"
+            className="flex items-center justify-center w-8 h-8 border border-border-custom bg-border-custom/5 hover:bg-border-custom/20 transition-all duration-250 text-foreground focus:outline-none cursor-pointer overflow-hidden rounded-none shadow-xs"
             aria-label="Toggle Theme"
             whileTap={{ scale: 0.92 }}
             transition={{ type: "spring", stiffness: 400, damping: 15 }}
@@ -153,7 +153,7 @@ export default function Navbar() {
                 exit={{ y: 12, opacity: 0, rotate: 90 }}
                 transition={{ type: "spring", stiffness: 300, damping: 20 }}
               >
-                {theme === "light" ? <Moon size={14} /> : <Sun size={14} />}
+                {theme === "light" ? <Moon size={13} /> : <Sun size={13} />}
               </motion.div>
             </AnimatePresence>
           </motion.button>
@@ -162,7 +162,7 @@ export default function Navbar() {
           <motion.a
             href="/resume.pdf"
             download
-            className="border border-foreground text-[11px] px-3.5 py-2 bg-transparent text-foreground hover:bg-foreground hover:text-background font-medium tracking-wide transition-editorial text-center cursor-pointer"
+            className="border border-foreground text-[10.5px] px-3.5 py-1.5 bg-transparent text-foreground hover:bg-foreground hover:text-background font-semibold tracking-wider transition-editorial text-center cursor-pointer uppercase rounded-none"
             whileTap={{ scale: 0.95 }}
             transition={{ type: "spring", stiffness: 400, damping: 15 }}
           >

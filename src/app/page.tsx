@@ -17,6 +17,7 @@ import {
   Phone
 } from "lucide-react";
 import { GithubIcon, LinkedinIcon } from "./components/Icons";
+import Magnetic from "./components/Magnetic";
 
 export default function Home() {
   // Editorial fade-up animation variants
@@ -32,13 +33,49 @@ export default function Home() {
   };
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 15 },
+    hidden: { opacity: 0, transform: "translateY(16px)" },
     visible: {
       opacity: 1,
-      y: 0,
+      transform: "translateY(0px)",
       transition: {
-        duration: 0.5,
-        ease: [0.16, 1, 0.3, 1] as const,
+        type: "spring" as const,
+        stiffness: 120,
+        damping: 14,
+        mass: 0.8,
+      },
+    },
+  };
+
+  const capabilitiesContainerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.08,
+        delayChildren: 0.05,
+      },
+    },
+  };
+
+  const capabilityColumnVariants = {
+    hidden: { opacity: 0, transform: "translateY(16px)" },
+    visible: {
+      opacity: 1,
+      transform: "translateY(0px)",
+      transition: {
+        type: "spring" as const,
+        stiffness: 120,
+        damping: 14,
+      },
+    },
+  };
+
+  const certsContainerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.08,
       },
     },
   };
@@ -144,25 +181,31 @@ export default function Home() {
             variants={itemVariants}
             className="flex flex-wrap items-center gap-4 text-[12px] font-semibold tracking-wide border-t border-border-custom/50 pt-6"
           >
-            <a 
+            <motion.a 
               href="#work" 
-              className="px-6 py-3 bg-accent text-background border border-accent transition-editorial hover:bg-transparent hover:text-accent font-semibold text-center"
+              className="px-6 py-3 bg-accent text-background border border-accent transition-colors duration-200 hover:bg-transparent hover:text-accent font-semibold text-center cursor-pointer"
+              whileTap={{ scale: 0.96 }}
+              transition={{ type: "spring", stiffness: 450, damping: 15 }}
             >
               SEE MY WORK
-            </a>
-            <a 
+            </motion.a>
+            <motion.a 
               href="/resume.pdf" 
               download
-              className="px-6 py-3 border border-border-custom hover:bg-border-custom/20 transition-editorial text-foreground font-semibold text-center flex items-center gap-2"
+              className="px-6 py-3 border border-border-custom hover:bg-border-custom/20 transition-colors duration-200 text-foreground font-semibold text-center flex items-center gap-2 cursor-pointer"
+              whileTap={{ scale: 0.96 }}
+              transition={{ type: "spring", stiffness: 450, damping: 15 }}
             >
               <FileText size={12} /> DOWNLOAD CV
-            </a>
-            <a 
+            </motion.a>
+            <motion.a 
               href="#contact" 
-              className="text-muted hover:text-accent transition-editorial font-semibold px-4 py-3"
+              className="text-muted hover:text-accent transition-colors duration-200 font-semibold px-4 py-3 cursor-pointer"
+              whileTap={{ scale: 0.96 }}
+              transition={{ type: "spring", stiffness: 450, damping: 15 }}
             >
               SAY HELLO &rarr;
-            </a>
+            </motion.a>
           </motion.div>
         </motion.section>
 
@@ -219,9 +262,15 @@ export default function Home() {
 
           <div className="flex flex-col gap-16">
             {projects.map((project) => (
-              <div 
+              <motion.div 
                 key={project.slug}
-                className="group border border-border-custom bg-border-custom/5 hover:border-accent hover:bg-border-custom/10 transition-all duration-300 flex flex-col gap-6 p-6 sm:p-8"
+                className="group border border-border-custom bg-border-custom/5 hover:border-accent hover:bg-border-custom/10 transition-colors duration-300 flex flex-col gap-6 p-6 sm:p-8 cursor-pointer origin-center"
+                whileHover={{ transform: "translateY(-6px) scale(1.015)" }}
+                whileTap={{ scale: 0.99 }}
+                transition={{ type: "spring", stiffness: 350, damping: 15 }}
+                initial={{ opacity: 0, transform: "translateY(24px)" }}
+                whileInView={{ opacity: 1, transform: "translateY(0)" }}
+                viewport={{ once: true, margin: "-100px" }}
               >
                 {/* Project Header */}
                 <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-3 border-b border-border-custom/40 pb-4">
@@ -229,7 +278,7 @@ export default function Home() {
                     <span className="text-[10px] text-accent font-semibold tracking-wider uppercase font-mono">
                       CASE STUDY {project.year}
                     </span>
-                    <h3 className="font-serif text-2xl sm:text-3xl font-bold text-foreground transition-editorial group-hover:text-accent">
+                    <h3 className="font-serif text-2xl sm:text-3xl font-bold text-foreground transition-colors duration-300 group-hover:text-accent">
                       {project.title}
                     </h3>
                   </div>
@@ -265,26 +314,30 @@ export default function Home() {
                   {/* Project Actions */}
                   <div className="flex items-center gap-4 pt-3 text-[11px] font-semibold tracking-wider">
                     {project.liveUrl && (
-                      <a 
+                      <motion.a 
                         href={project.liveUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-accent hover:underline flex items-center gap-1 border border-accent/20 bg-accent/5 px-4 py-2 hover:bg-accent hover:text-background transition-all"
+                        className="text-accent hover:underline flex items-center gap-1 border border-accent/20 bg-accent/5 px-4 py-2 hover:bg-accent hover:text-background transition-colors duration-300 cursor-pointer"
+                        whileTap={{ scale: 0.96 }}
+                        transition={{ type: "spring", stiffness: 450, damping: 15 }}
                       >
                         LIVE SITE <ArrowUpRight size={12} />
-                      </a>
+                      </motion.a>
                     )}
-                    <a 
+                    <motion.a 
                       href={project.githubUrl} 
                       target="_blank" 
                       rel="noopener noreferrer"
-                      className="text-muted hover:text-foreground transition-editorial flex items-center gap-1 px-2 py-2"
+                      className="text-muted hover:text-foreground transition-colors duration-300 flex items-center gap-1 px-2 py-2 cursor-pointer"
+                      whileTap={{ scale: 0.96 }}
+                      transition={{ type: "spring", stiffness: 450, damping: 15 }}
                     >
                       <GithubIcon size={12} /> REPOSITORY
-                    </a>
+                    </motion.a>
                   </div>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
         </section>
@@ -296,9 +349,15 @@ export default function Home() {
             03 / CAPABILITIES
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+          <motion.div 
+            className="grid grid-cols-2 md:grid-cols-4 gap-6"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={capabilitiesContainerVariants}
+          >
             {/* Frontend */}
-            <div className="flex flex-col gap-3">
+            <motion.div variants={capabilityColumnVariants} className="flex flex-col gap-3">
               <span className="text-[11px] font-bold tracking-wider text-muted uppercase">FRONTEND</span>
               <div className="flex flex-col gap-1.5 font-light text-xs text-foreground/80">
                 <span className="border-l-2 border-border-custom pl-2 py-0.5">React</span>
@@ -306,10 +365,10 @@ export default function Home() {
                 <span className="border-l-2 border-border-custom pl-2 py-0.5">TypeScript</span>
                 <span className="border-l-2 border-border-custom pl-2 py-0.5">Tailwind CSS</span>
               </div>
-            </div>
+            </motion.div>
 
             {/* Backend */}
-            <div className="flex flex-col gap-3">
+            <motion.div variants={capabilityColumnVariants} className="flex flex-col gap-3">
               <span className="text-[11px] font-bold tracking-wider text-muted uppercase">BACKEND</span>
               <div className="flex flex-col gap-1.5 font-light text-xs text-foreground/80">
                 <span className="border-l-2 border-border-custom pl-2 py-0.5">Node.js</span>
@@ -317,10 +376,10 @@ export default function Home() {
                 <span className="border-l-2 border-border-custom pl-2 py-0.5">PostgreSQL</span>
                 <span className="border-l-2 border-border-custom pl-2 py-0.5">REST APIs</span>
               </div>
-            </div>
+            </motion.div>
 
             {/* AI / ML */}
-            <div className="flex flex-col gap-3">
+            <motion.div variants={capabilityColumnVariants} className="flex flex-col gap-3">
               <span className="text-[11px] font-bold tracking-wider text-muted uppercase">AI / INTELLIGENCE</span>
               <div className="flex flex-col gap-1.5 font-light text-xs text-foreground/80">
                 <span className="border-l-2 border-border-custom pl-2 py-0.5">Python</span>
@@ -328,10 +387,10 @@ export default function Home() {
                 <span className="border-l-2 border-border-custom pl-2 py-0.5">RAG Pipelines</span>
                 <span className="border-l-2 border-border-custom pl-2 py-0.5">OpenAI APIs</span>
               </div>
-            </div>
+            </motion.div>
 
             {/* Tools */}
-            <div className="flex flex-col gap-3">
+            <motion.div variants={capabilityColumnVariants} className="flex flex-col gap-3">
               <span className="text-[11px] font-bold tracking-wider text-muted uppercase">INFRASTRUCTURE</span>
               <div className="flex flex-col gap-1.5 font-light text-xs text-foreground/80">
                 <span className="border-l-2 border-border-custom pl-2 py-0.5">Docker</span>
@@ -339,8 +398,8 @@ export default function Home() {
                 <span className="border-l-2 border-border-custom pl-2 py-0.5">AWS Services</span>
                 <span className="border-l-2 border-border-custom pl-2 py-0.5">Linux Server</span>
               </div>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
         </section>
 
 
@@ -352,9 +411,21 @@ export default function Home() {
 
           <div className="relative pl-6 flex flex-col gap-8">
             {/* Timeline Bullet Dot */}
-            <div className="absolute left-[3px] top-[14px] w-[7px] h-[7px] rounded-full border border-foreground bg-background" />
+            <motion.div 
+              className="absolute left-[3px] top-[14px] w-[7px] h-[7px] rounded-full border border-foreground bg-background origin-center"
+              initial={{ scale: 0 }}
+              whileInView={{ scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ type: "spring", stiffness: 250, damping: 10, delay: 0.15 }}
+            />
             
-            <div className="flex flex-col gap-1">
+            <motion.div 
+              className="flex flex-col gap-1"
+              initial={{ opacity: 0, transform: "translateY(16px)" }}
+              whileInView={{ opacity: 1, transform: "translateY(0)" }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ type: "spring", stiffness: 100, damping: 14 }}
+            >
               <div className="text-[11px] text-muted font-normal flex justify-between items-center sm:w-full">
                 <span>MAY 2026 – PRESENT</span>
                 <span className="text-[10px] uppercase font-mono tracking-wider flex items-center gap-1 text-right"><MapPin size={10} /> Vadodara, Gujarat</span>
@@ -370,7 +441,7 @@ export default function Home() {
                 <li>Creating wireframes, interactive prototypes, and responsive layouts to ensure accessibility and consistent design across multiple devices.</li>
                 <li>Building Tyroo Placement OS, a full-stack placement management platform, developing student dashboards, drive calendar, and placement analytics using Hono, Supabase, and Prisma.</li>
               </ul>
-            </div>
+            </motion.div>
           </div>
         </section>
 
@@ -381,43 +452,73 @@ export default function Home() {
             05 / CERTIFICATIONS
           </div>
           
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <motion.div 
+            className="grid grid-cols-1 sm:grid-cols-2 gap-4"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={certsContainerVariants}
+          >
             {/* Cert 1 */}
-            <div className="border border-border-custom p-4 bg-border-custom/5 flex items-start gap-3">
+            <motion.div 
+              variants={capabilityColumnVariants}
+              className="border border-border-custom p-4 bg-border-custom/5 hover:border-accent hover:bg-border-custom/10 transition-colors duration-300 flex items-start gap-3 cursor-pointer origin-center"
+              whileHover={{ transform: "translateY(-4px) scale(1.015)" }}
+              whileTap={{ scale: 0.98 }}
+              transition={{ type: "spring", stiffness: 350, damping: 15 }}
+            >
               <Award className="text-accent flex-shrink-0 mt-0.5" size={16} />
               <div className="flex flex-col">
                 <span className="text-xs font-bold text-foreground font-mono">AWS Academy Cloud Foundations</span>
                 <span className="text-[10px] text-muted uppercase mt-0.5">AWS Academy · Nov 2025</span>
               </div>
-            </div>
+            </motion.div>
 
             {/* Cert 2 */}
-            <div className="border border-border-custom p-4 bg-border-custom/5 flex items-start gap-3">
+            <motion.div 
+              variants={capabilityColumnVariants}
+              className="border border-border-custom p-4 bg-border-custom/5 hover:border-accent hover:bg-border-custom/10 transition-colors duration-300 flex items-start gap-3 cursor-pointer origin-center"
+              whileHover={{ transform: "translateY(-4px) scale(1.015)" }}
+              whileTap={{ scale: 0.98 }}
+              transition={{ type: "spring", stiffness: 350, damping: 15 }}
+            >
               <Award className="text-accent flex-shrink-0 mt-0.5" size={16} />
               <div className="flex flex-col">
                 <span className="text-xs font-bold text-foreground font-mono">AWS Academy ML Foundations</span>
                 <span className="text-[10px] text-muted uppercase mt-0.5">AWS Academy · Nov 2025</span>
               </div>
-            </div>
+            </motion.div>
 
             {/* Cert 3 */}
-            <div className="border border-border-custom p-4 bg-border-custom/5 flex items-start gap-3">
+            <motion.div 
+              variants={capabilityColumnVariants}
+              className="border border-border-custom p-4 bg-border-custom/5 hover:border-accent hover:bg-border-custom/10 transition-colors duration-300 flex items-start gap-3 cursor-pointer origin-center"
+              whileHover={{ transform: "translateY(-4px) scale(1.015)" }}
+              whileTap={{ scale: 0.98 }}
+              transition={{ type: "spring", stiffness: 350, damping: 15 }}
+            >
               <Award className="text-accent flex-shrink-0 mt-0.5" size={16} />
               <div className="flex flex-col">
                 <span className="text-xs font-bold text-foreground font-mono">Prompt Engineering Basics</span>
                 <span className="text-[10px] text-muted uppercase mt-0.5">IBM Skills Network · Jan 2026</span>
               </div>
-            </div>
+            </motion.div>
 
             {/* Cert 4 */}
-            <div className="border border-border-custom p-4 bg-border-custom/5 flex items-start gap-3">
+            <motion.div 
+              variants={capabilityColumnVariants}
+              className="border border-border-custom p-4 bg-border-custom/5 hover:border-accent hover:bg-border-custom/10 transition-colors duration-300 flex items-start gap-3 cursor-pointer origin-center"
+              whileHover={{ transform: "translateY(-4px) scale(1.015)" }}
+              whileTap={{ scale: 0.98 }}
+              transition={{ type: "spring", stiffness: 350, damping: 15 }}
+            >
               <Award className="text-accent flex-shrink-0 mt-0.5" size={16} />
               <div className="flex flex-col">
                 <span className="text-xs font-bold text-foreground font-mono">Yuva AI for All Scheme</span>
                 <span className="text-[10px] text-muted uppercase mt-0.5">IndiaAI & NASSCOM · Jan 2026</span>
               </div>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
         </section>
 
 
@@ -427,7 +528,13 @@ export default function Home() {
             06 / CURRENT STATUS
           </div>
 
-          <div className="border border-border-custom bg-[#0E0E0E] text-[#E0DDD8] p-6 font-mono text-xs flex flex-col gap-4 rounded-none">
+          <motion.div 
+            className="border border-border-custom bg-[#0E0E0E] text-[#E0DDD8] p-6 font-mono text-xs flex flex-col gap-4 rounded-none origin-center"
+            initial={{ opacity: 0, transform: "translateY(16px)" }}
+            whileInView={{ opacity: 1, transform: "translateY(0)" }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ type: "spring", stiffness: 100, damping: 14 }}
+          >
             <div className="flex justify-between items-center border-b border-border-custom/25 pb-3">
               <div className="flex items-center gap-2">
                 <Activity size={12} className="text-accent animate-pulse" />
@@ -456,7 +563,7 @@ export default function Home() {
                 </span>
               </div>
             </div>
-          </div>
+          </motion.div>
         </section>
 
 
@@ -477,41 +584,61 @@ export default function Home() {
             </div>
             
             <div className="flex flex-col text-sm leading-[2.2] border-l border-border-custom pl-6 justify-center">
-              <a 
-                href="mailto:mehtameet685@gmail.com" 
-                className="text-foreground hover:text-accent font-semibold transition-editorial flex items-center gap-2"
-              >
-                <Mail size={14} className="text-muted" /> mehtameet685@gmail.com
-              </a>
-              <a 
-                href="tel:+918320907038" 
-                className="text-foreground hover:text-accent font-semibold transition-editorial flex items-center gap-2"
-              >
-                <Phone size={14} className="text-muted" /> +91 8320907038
-              </a>
-              <a 
-                href="https://linkedin.com/in/meet-mehta685" 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                className="text-foreground hover:text-accent font-semibold transition-editorial flex items-center gap-2"
-              >
-                <LinkedinIcon size={14} className="text-muted" /> LinkedIn Profile
-              </a>
-              <a 
-                href="https://github.com/meetmehta0685" 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                className="text-foreground hover:text-accent font-semibold transition-editorial flex items-center gap-2"
-              >
-                <GithubIcon size={14} className="text-muted" /> GitHub Repositories
-              </a>
-              <a 
-                href="/resume.pdf" 
-                download
-                className="text-foreground hover:text-accent font-semibold transition-editorial flex items-center gap-2"
-              >
-                <FileText size={14} className="text-muted" /> Download Resume PDF
-              </a>
+              <Magnetic>
+                <motion.a 
+                  href="mailto:mehtameet685@gmail.com" 
+                  className="text-foreground hover:text-accent font-semibold transition-colors duration-200 flex items-center gap-2 cursor-pointer origin-left w-fit"
+                  whileTap={{ scale: 0.98 }}
+                  transition={{ type: "spring", stiffness: 500, damping: 15 }}
+                >
+                  <Mail size={14} className="text-muted" /> mehtameet685@gmail.com
+                </motion.a>
+              </Magnetic>
+              <Magnetic>
+                <motion.a 
+                  href="tel:+918320907038" 
+                  className="text-foreground hover:text-accent font-semibold transition-colors duration-200 flex items-center gap-2 cursor-pointer origin-left w-fit"
+                  whileTap={{ scale: 0.98 }}
+                  transition={{ type: "spring", stiffness: 500, damping: 15 }}
+                >
+                  <Phone size={14} className="text-muted" /> +91 8320907038
+                </motion.a>
+              </Magnetic>
+              <Magnetic>
+                <motion.a 
+                  href="https://linkedin.com/in/meet-mehta685" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="text-foreground hover:text-accent font-semibold transition-colors duration-200 flex items-center gap-2 cursor-pointer origin-left w-fit"
+                  whileTap={{ scale: 0.98 }}
+                  transition={{ type: "spring", stiffness: 500, damping: 15 }}
+                >
+                  <LinkedinIcon size={14} className="text-muted" /> LinkedIn Profile
+                </motion.a>
+              </Magnetic>
+              <Magnetic>
+                <motion.a 
+                  href="https://github.com/meetmehta0685" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="text-foreground hover:text-accent font-semibold transition-colors duration-200 flex items-center gap-2 cursor-pointer origin-left w-fit"
+                  whileTap={{ scale: 0.98 }}
+                  transition={{ type: "spring", stiffness: 500, damping: 15 }}
+                >
+                  <GithubIcon size={14} className="text-muted" /> GitHub Repositories
+                </motion.a>
+              </Magnetic>
+              <Magnetic>
+                <motion.a 
+                  href="/resume.pdf" 
+                  download
+                  className="text-foreground hover:text-accent font-semibold transition-colors duration-200 flex items-center gap-2 cursor-pointer origin-left w-fit"
+                  whileTap={{ scale: 0.98 }}
+                  transition={{ type: "spring", stiffness: 500, damping: 15 }}
+                >
+                  <FileText size={14} className="text-muted" /> Download Resume PDF
+                </motion.a>
+              </Magnetic>
             </div>
           </div>
 

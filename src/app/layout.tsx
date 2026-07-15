@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Playfair_Display, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
+import DotGridBackground from "./components/DotGridBackground";
 
 const playfair = Playfair_Display({
   variable: "--font-playfair",
@@ -39,6 +40,7 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-full flex flex-col bg-background text-foreground">
+        <DotGridBackground />
         {children}
       </body>
     </html>

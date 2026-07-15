@@ -3,6 +3,9 @@
 import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import { Sun, Moon } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+
+const MotionLink = motion.create(Link);
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -90,50 +93,81 @@ export default function Navbar() {
     >
       <div className="w-full max-w-4xl mx-auto px-6 flex items-center justify-between font-mono">
         {/* LOGO / MONOGRAM */}
-        <Link
+        <MotionLink
           href="/"
           className="text-sm font-bold tracking-widest hover:text-accent transition-editorial flex items-center group/logo"
           onMouseEnter={handleMouseEnter}
+          whileTap={{ scale: 0.97 }}
+          transition={{ type: "spring", stiffness: 400, damping: 15 }}
         >
           <span>{text}</span>
           <span className={`inline-block w-1.5 h-3.5 bg-accent ml-1 ${isTyping ? "opacity-100" : "cursor-blink"}`} />
-        </Link>
+        </MotionLink>
 
 
         {/* NAVIGATION LINKS */}
         <nav className="hidden sm:flex items-center gap-4 text-xs tracking-wider text-muted font-medium">
-          <Link href="/#about" className="hover:text-foreground transition-editorial">
+          <MotionLink 
+            href="/#about" 
+            className="hover:text-foreground transition-editorial"
+            whileTap={{ scale: 0.96 }}
+            transition={{ type: "spring", stiffness: 400, damping: 15 }}
+          >
             ABOUT
-          </Link>
+          </MotionLink>
           <span className="select-none text-border-custom">•</span>
-          <Link href="/#work" className="hover:text-foreground transition-editorial">
+          <MotionLink 
+            href="/#work" 
+            className="hover:text-foreground transition-editorial"
+            whileTap={{ scale: 0.96 }}
+            transition={{ type: "spring", stiffness: 400, damping: 15 }}
+          >
             WORK
-          </Link>
+          </MotionLink>
           <span className="select-none text-border-custom">•</span>
-          <Link href="/#contact" className="hover:text-foreground transition-editorial">
+          <MotionLink 
+            href="/#contact" 
+            className="hover:text-foreground transition-editorial"
+            whileTap={{ scale: 0.96 }}
+            transition={{ type: "spring", stiffness: 400, damping: 15 }}
+          >
             CONTACT
-          </Link>
+          </MotionLink>
         </nav>
 
         {/* RIGHT ACTIONS */}
         <div className="flex items-center gap-3">
           {/* THEME TOGGLE */}
-          <button
+          <motion.button
             onClick={toggleTheme}
-            className="p-2 border border-border-custom hover:bg-border-custom/20 transition-editorial text-foreground focus:outline-none"
+            className="flex items-center justify-center w-8 h-8 border border-border-custom hover:bg-border-custom/20 transition-colors duration-200 text-foreground focus:outline-none cursor-pointer overflow-hidden"
             aria-label="Toggle Theme"
+            whileTap={{ scale: 0.92 }}
+            transition={{ type: "spring", stiffness: 400, damping: 15 }}
           >
-            {theme === "light" ? <Moon size={14} /> : <Sun size={14} />}
-          </button>
+            <AnimatePresence mode="wait" initial={false}>
+              <motion.div
+                key={theme}
+                initial={{ y: -12, opacity: 0, rotate: -90 }}
+                animate={{ y: 0, opacity: 1, rotate: 0 }}
+                exit={{ y: 12, opacity: 0, rotate: 90 }}
+                transition={{ type: "spring", stiffness: 300, damping: 20 }}
+              >
+                {theme === "light" ? <Moon size={14} /> : <Sun size={14} />}
+              </motion.div>
+            </AnimatePresence>
+          </motion.button>
 
           {/* RESUME BUTTON */}
-          <a
+          <motion.a
             href="/resume.pdf"
             download
-            className="border border-foreground text-[11px] px-3.5 py-2 bg-transparent text-foreground hover:bg-foreground hover:text-background font-medium tracking-wide transition-editorial text-center"
+            className="border border-foreground text-[11px] px-3.5 py-2 bg-transparent text-foreground hover:bg-foreground hover:text-background font-medium tracking-wide transition-editorial text-center cursor-pointer"
+            whileTap={{ scale: 0.95 }}
+            transition={{ type: "spring", stiffness: 400, damping: 15 }}
           >
             <span className="hidden xs:inline">DOWNLOAD </span>CV
-          </a>
+          </motion.a>
         </div>
       </div>
     </header>

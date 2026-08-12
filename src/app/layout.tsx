@@ -23,8 +23,8 @@ const outfit = Outfit({
 
 export const metadata: Metadata = {
   title: "Meet Mehta — Portfolio",
-  description: "Meet Mehta — Full-stack developer based in Ahmedabad, India.",
-  keywords: ["Meet Mehta", "Portfolio", "Software Engineer", "Full-Stack Engineer", "Adani University", "Next.js", "AI-ML"],
+  description: "Meet Mehta — Full-stack developer and B.Tech CSE (AI & ML) student based in Ahmedabad, India.",
+  keywords: ["Meet Mehta", "Portfolio", "Software Engineer", "Full-Stack Developer", "Adani University", "Next.js", "TypeScript", "Supabase", "AI-ML"],
 };
 
 export default function RootLayout({

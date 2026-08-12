@@ -3,17 +3,13 @@
 import { motion } from "framer-motion";
 import Navbar from "./components/Navbar";
 import { projects } from "@/data/projects";
-import Link from "next/link";
 import {
   ArrowUpRight,
-  ExternalLink,
   Award,
-  CheckCircle,
   Mail,
   MapPin,
   FileText,
   Activity,
-  Cpu,
   Phone
 } from "lucide-react";
 import { GithubIcon, LinkedinIcon } from "./components/Icons";
@@ -112,7 +108,7 @@ export default function Home() {
                 variants={itemVariants}
                 className="text-base font-light text-foreground/80 leading-relaxed max-w-[480px] mt-1"
               >
-                Full-stack developer focused on building scalable products, AI systems, and thoughtful, robust user experiences.
+                Full-stack developer building role-based platforms, real-time workflows, and practical AI-assisted products with modern web technologies.
               </motion.p>
 
               {/* Status Badge */}
@@ -164,10 +160,10 @@ export default function Home() {
               >
                 <div className="flex justify-between items-center border-b border-border-custom/40 pb-1.5 font-bold text-muted">
                   <span>CURRENT STATUS</span>
-                  <span className="text-accent">• LIVE</span>
+                  <span className="text-accent">• OPEN</span>
                 </div>
                 <div className="flex flex-col gap-1 text-foreground/90 font-light">
-                  <div>• UI/UX Intern at Appendo</div>
+                  <div>• B.Tech CSE (AI &amp; ML) student</div>
                   <div className="flex items-center gap-1">
                     • Based in Ahmedabad, India <MapPin size={10} className="text-muted" />
                   </div>
@@ -187,7 +183,7 @@ export default function Home() {
               whileTap={{ scale: 0.96 }}
               transition={{ type: "spring", stiffness: 450, damping: 15 }}
             >
-              SEE MY WORK
+              SEE PROJECTS
             </motion.a>
             <motion.a 
               href="/resume.pdf" 
@@ -196,7 +192,7 @@ export default function Home() {
               whileTap={{ scale: 0.96 }}
               transition={{ type: "spring", stiffness: 450, damping: 15 }}
             >
-              <FileText size={12} /> DOWNLOAD CV
+              <FileText size={12} /> DOWNLOAD RESUME
             </motion.a>
             <motion.a 
               href="#contact" 
@@ -232,20 +228,20 @@ export default function Home() {
             {/* Introduction Narrative */}
             <div className="md:col-span-8 flex flex-col gap-6 text-[15px] leading-relaxed font-light text-foreground/80">
               <p>
-                I am Meet Mehta, a final-year B.Tech student in AI-ML at Adani University. I focus on writing clean, readable systems and building full-stack applications that solve real-world workflows. I currently maintain a 7.48 CGPA and intern as a UI/UX design intern at Appendo Consulting and Services, translating interfaces into working components.
+                I&apos;m Meet Mehta, a B.Tech Computer Science and Engineering student specializing in Artificial Intelligence and Machine Learning at Adani University, graduating in 2027. I build full-stack products around real-world operational workflows, from food redistribution and IELTS preparation to clinical operations. During my UI/UX internship at Appendo Consulting and Service, I contributed to Tyroo Placement OS using Hono, Supabase, and Prisma.
               </p>
               
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-2 text-xs">
                 <div className="flex flex-col gap-2.5 border-l-2 border-accent pl-5 py-0.5">
                   <span className="font-mono font-bold uppercase tracking-wider text-xs text-muted">CURRENT FOCUS</span>
                   <p className="text-[13px] text-foreground/70 leading-relaxed font-light font-sans">
-                    Developing a placement preparation portal for students integrated with AI, and building responsive layouts.
+                    I&apos;m not actively building a new product right now. I&apos;m reviewing recent work, strengthening my full-stack foundations, and exploring what to take on next.
                   </p>
                 </div>
                 <div className="flex flex-col gap-2.5 border-l-2 border-accent pl-5 py-0.5">
                   <span className="font-mono font-bold uppercase tracking-wider text-xs text-muted">CORE INTERESTS</span>
                   <p className="text-[13px] text-foreground/70 leading-relaxed font-light font-sans">
-                    Swiss typographic layout grids, distributed database synchronization, and scalable AI inference backends.
+                    Full-stack product engineering, real-time operational workflows, and useful AI-assisted experiences.
                   </p>
                 </div>
               </div>
@@ -257,7 +253,7 @@ export default function Home() {
         {/* PROJECTS SECTION */}
         <section id="work" className="flex flex-col gap-8 scroll-mt-20">
           <div className="text-[10px] font-mono text-accent tracking-widest font-bold uppercase border-b border-border-custom pb-2.5">
-            02 / SELECTED CASE STUDIES
+            02 / PROJECTS
           </div>
 
           <div className="flex flex-col gap-10">
@@ -276,26 +272,27 @@ export default function Home() {
                 <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-3 border-b border-border-custom/40 pb-4">
                   <div className="flex flex-col gap-1">
                     <span className="text-[9.5px] text-accent font-semibold tracking-widest uppercase font-mono">
-                      CASE STUDY {project.year}
+                      PROJECT
                     </span>
                     <h3 className="font-serif text-2xl sm:text-3xl font-bold text-foreground transition-colors duration-300 group-hover:text-accent">
                       {project.title}
                     </h3>
                   </div>
-                  <span className="text-[10px] text-muted font-normal bg-border-custom/30 border border-border-custom/50 px-2.5 py-0.5 self-start sm:self-auto uppercase tracking-widest font-mono select-none">
-                    {project.year}
-                  </span>
                 </div>
 
                 <div className="flex flex-col gap-4 text-xs font-light">
                   <div className="flex flex-col gap-4 font-light text-foreground/80 leading-relaxed text-[13.5px]">
                     <div>
-                      <strong className="font-mono font-bold block text-[10.5px] uppercase tracking-wider text-muted mb-1">THE PROBLEM</strong>
-                      {project.problemSolved}
+                      <strong className="font-mono font-bold block text-[10.5px] uppercase tracking-wider text-muted mb-1">OVERVIEW</strong>
+                      {project.summary}
                     </div>
                     <div>
-                      <strong className="font-mono font-bold block text-[10.5px] uppercase tracking-wider text-muted mb-1">KEY ACHIEVEMENT</strong>
-                      {project.keyAchievements[0]}
+                      <strong className="font-mono font-bold block text-[10.5px] uppercase tracking-wider text-muted mb-1.5">KEY FEATURES</strong>
+                      <ul className="list-disc list-outside pl-4 flex flex-col gap-1.5">
+                        {project.keyAchievements.map((achievement) => (
+                          <li key={achievement}>{achievement}</li>
+                        ))}
+                      </ul>
                     </div>
                   </div>
 
@@ -313,20 +310,18 @@ export default function Home() {
 
                   {/* Project Actions */}
                   <div className="flex items-center gap-4 pt-3 text-[11px] font-semibold tracking-wider font-mono">
-                    {project.liveUrl && (
-                      <Magnetic>
-                        <motion.a 
-                          href={project.liveUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-accent hover:underline flex items-center gap-1 border border-accent/20 bg-accent/5 px-4 py-2 hover:bg-accent hover:text-background transition-colors duration-300 cursor-pointer"
-                          whileTap={{ scale: 0.96 }}
-                          transition={{ type: "spring", stiffness: 450, damping: 15 }}
-                        >
-                          LIVE SITE <ArrowUpRight size={12} />
-                        </motion.a>
-                      </Magnetic>
-                    )}
+                    <Magnetic>
+                      <motion.a
+                        href={project.liveUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-accent hover:underline flex items-center gap-1 border border-accent/20 bg-accent/5 px-4 py-2 hover:bg-accent hover:text-background transition-colors duration-300 cursor-pointer"
+                        whileTap={{ scale: 0.96 }}
+                        transition={{ type: "spring", stiffness: 450, damping: 15 }}
+                      >
+                        LIVE SITE <ArrowUpRight size={12} />
+                      </motion.a>
+                    </Magnetic>
                     <Magnetic>
                       <motion.a 
                         href={project.githubUrl} 
@@ -354,75 +349,34 @@ export default function Home() {
           </div>
 
           <motion.div 
-            className="grid grid-cols-2 md:grid-cols-4 gap-6"
+            className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6"
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: "-100px" }}
             variants={capabilitiesContainerVariants}
           >
-            {/* Frontend */}
-            <motion.div variants={capabilityColumnVariants} className="flex flex-col gap-3">
-              <span className="text-[10.5px] font-mono font-bold tracking-wider text-muted uppercase">FRONTEND</span>
-              <div className="flex flex-col gap-1.5">
-                {["React", "Next.js", "TypeScript", "Tailwind CSS"].map((skill) => (
-                  <span 
-                    key={skill} 
-                    className="border border-border-custom/60 bg-border-custom/5 hover:border-accent hover:bg-accent/5 hover:text-accent px-3 py-1.5 text-[11px] font-mono transition-all duration-200 select-none flex items-center justify-between group rounded-none"
-                  >
-                    <span>{skill}</span>
-                    <span className="w-1 h-1 rounded-full bg-border-custom group-hover:bg-accent transition-colors duration-200" />
-                  </span>
-                ))}
-              </div>
-            </motion.div>
-
-            {/* Backend */}
-            <motion.div variants={capabilityColumnVariants} className="flex flex-col gap-3">
-              <span className="text-[10.5px] font-mono font-bold tracking-wider text-muted uppercase">BACKEND</span>
-              <div className="flex flex-col gap-1.5">
-                {["Node.js", "FastAPI", "PostgreSQL", "REST APIs"].map((skill) => (
-                  <span 
-                    key={skill} 
-                    className="border border-border-custom/60 bg-border-custom/5 hover:border-accent hover:bg-accent/5 hover:text-accent px-3 py-1.5 text-[11px] font-mono transition-all duration-200 select-none flex items-center justify-between group rounded-none"
-                  >
-                    <span>{skill}</span>
-                    <span className="w-1 h-1 rounded-full bg-border-custom group-hover:bg-accent transition-colors duration-200" />
-                  </span>
-                ))}
-              </div>
-            </motion.div>
-
-            {/* AI / ML */}
-            <motion.div variants={capabilityColumnVariants} className="flex flex-col gap-3">
-              <span className="text-[10.5px] font-mono font-bold tracking-wider text-muted uppercase">AI / INTELLIGENCE</span>
-              <div className="flex flex-col gap-1.5">
-                {["Python", "LangChain", "RAG Pipelines", "OpenAI APIs"].map((skill) => (
-                  <span 
-                    key={skill} 
-                    className="border border-border-custom/60 bg-border-custom/5 hover:border-accent hover:bg-accent/5 hover:text-accent px-3 py-1.5 text-[11px] font-mono transition-all duration-200 select-none flex items-center justify-between group rounded-none"
-                  >
-                    <span>{skill}</span>
-                    <span className="w-1 h-1 rounded-full bg-border-custom group-hover:bg-accent transition-colors duration-200" />
-                  </span>
-                ))}
-              </div>
-            </motion.div>
-
-            {/* Tools */}
-            <motion.div variants={capabilityColumnVariants} className="flex flex-col gap-3">
-              <span className="text-[10.5px] font-mono font-bold tracking-wider text-muted uppercase">INFRASTRUCTURE</span>
-              <div className="flex flex-col gap-1.5">
-                {["Docker", "Git / GitHub", "AWS Services", "Linux Server"].map((skill) => (
-                  <span 
-                    key={skill} 
-                    className="border border-border-custom/60 bg-border-custom/5 hover:border-accent hover:bg-accent/5 hover:text-accent px-3 py-1.5 text-[11px] font-mono transition-all duration-200 select-none flex items-center justify-between group rounded-none"
-                  >
-                    <span>{skill}</span>
-                    <span className="w-1 h-1 rounded-full bg-border-custom group-hover:bg-accent transition-colors duration-200" />
-                  </span>
-                ))}
-              </div>
-            </motion.div>
+            {[
+              { label: "LANGUAGES", skills: ["C++", "TypeScript", "JavaScript", "Python", "Java"] },
+              { label: "FRONTEND", skills: ["React", "Next.js", "Tailwind CSS", "HTML", "CSS"] },
+              { label: "BACKEND", skills: ["Node.js", "Express.js", "Hono", "FastAPI", "REST APIs"] },
+              { label: "DATABASES", skills: ["PostgreSQL", "MongoDB", "Supabase", "Neon"] },
+              { label: "TOOLS & CLOUD", skills: ["AWS", "Docker", "Prisma", "Git", "GitHub", "Linux / Unix", "Vercel"] }
+            ].map((group) => (
+              <motion.div key={group.label} variants={capabilityColumnVariants} className="flex flex-col gap-3">
+                <span className="text-[10.5px] font-mono font-bold tracking-wider text-muted uppercase">{group.label}</span>
+                <div className="flex flex-col gap-1.5">
+                  {group.skills.map((skill) => (
+                    <span
+                      key={skill}
+                      className="border border-border-custom/60 bg-border-custom/5 hover:border-accent hover:bg-accent/5 hover:text-accent px-3 py-1.5 text-[11px] font-mono transition-all duration-200 select-none flex items-center justify-between gap-2 group rounded-none"
+                    >
+                      <span>{skill}</span>
+                      <span className="w-1 h-1 shrink-0 rounded-full bg-border-custom group-hover:bg-accent transition-colors duration-200" />
+                    </span>
+                  ))}
+                </div>
+              </motion.div>
+            ))}
           </motion.div>
         </section>
 
@@ -454,7 +408,7 @@ export default function Home() {
               transition={{ type: "spring", stiffness: 100, damping: 14 }}
             >
               <div className="text-[10px] font-mono text-muted font-normal flex justify-between items-center sm:w-full">
-                <span>MAY 2026 – PRESENT</span>
+                <span>MAY 2026 – JUL 2026</span>
                 <span className="text-[9.5px] uppercase font-mono tracking-wider flex items-center gap-1 text-right select-none"><MapPin size={10} /> Vadodara, Gujarat</span>
               </div>
               <h3 className="font-serif text-xl font-bold text-foreground leading-snug mt-1">
@@ -464,9 +418,9 @@ export default function Home() {
                 UI/UX Intern
               </div>
               <ul className="text-[13.5px] leading-relaxed text-foreground/80 font-light list-disc list-outside pl-4 flex flex-col gap-2 font-sans">
-                <li>Designing and developing intuitive user interfaces and seamless user experiences for a new, interactive mock interview platform.</li>
-                <li>Creating wireframes, interactive prototypes, and responsive layouts to ensure accessibility and consistent design across multiple devices.</li>
-                <li>Building Tyroo Placement OS, a full-stack placement management platform, developing student dashboards, drive calendar, and placement analytics using Hono, Supabase, and Prisma.</li>
+                <li>Contributed to the full-stack development of Tyroo Placement OS, building student dashboards, a placement-drive calendar, and analytics modules with Hono, Supabase, and Prisma.</li>
+                <li>Translated product requirements and prototypes into responsive desktop and mobile workflows for placement-management and mock-interview features.</li>
+                <li>Collaborated across product and engineering to develop reusable workflows within implementation constraints and accessible interface requirements.</li>
               </ul>
             </motion.div>
           </div>
@@ -487,13 +441,15 @@ export default function Home() {
             variants={certsContainerVariants}
           >
             {[
-              { title: "AWS Academy Cloud Foundations", issuer: "AWS Academy · Nov 2025" },
-              { title: "AWS Academy ML Foundations", issuer: "AWS Academy · Nov 2025" },
-              { title: "Prompt Engineering Basics", issuer: "IBM Skills Network · Jan 2026" },
-              { title: "Yuva AI for All Scheme", issuer: "IndiaAI & NASSCOM · Jan 2026" }
+              { title: "AWS Academy Cloud Architecting", issuer: "AWS Academy · Apr 2026", url: "https://www.credly.com/go/xSoxYcJe" },
+              { title: "AWS Academy Cloud Foundations", issuer: "AWS Academy · Nov 2025", url: "https://www.credly.com/go/oZ1FM0T3" },
+              { title: "AWS Academy Machine Learning Foundations", issuer: "AWS Academy · Nov 2025", url: "https://www.credly.com/go/zSWYqx4B" }
             ].map((cert) => (
-              <motion.div 
+              <motion.a
                 key={cert.title}
+                href={cert.url}
+                target="_blank"
+                rel="noopener noreferrer"
                 variants={capabilityColumnVariants}
                 className="border border-border-custom p-5 bg-border-custom/5 hover:border-accent hover:bg-border-custom/10 transition-all duration-300 flex items-start gap-3 cursor-pointer origin-center shadow-xs hover:shadow-sm"
                 whileHover={{ transform: "translateY(-3px) scale(1.01)" }}
@@ -505,7 +461,7 @@ export default function Home() {
                   <span className="text-[13px] font-semibold text-foreground font-sans leading-snug">{cert.title}</span>
                   <span className="text-[9.5px] text-muted-foreground font-mono uppercase mt-1">{cert.issuer}</span>
                 </div>
-              </motion.div>
+              </motion.a>
             ))}
           </motion.div>
         </section>
@@ -514,7 +470,7 @@ export default function Home() {
         {/* SYSTEM STATUS SECTION */}
         <section className="flex flex-col gap-6">
           <div className="text-[10px] font-mono text-accent tracking-widest font-bold uppercase border-b border-border-custom pb-2.5">
-            06 / CURRENT STATUS
+            06 / CURRENT FOCUS
           </div>
 
           <motion.div 
@@ -527,10 +483,10 @@ export default function Home() {
             <div className="flex justify-between items-center border-b border-border-custom/20 pb-3">
               <div className="flex items-center gap-2">
                 <Activity size={12} className="text-accent animate-pulse" />
-                <span className="font-bold tracking-wider text-[10px] text-muted uppercase">SYSTEM STATUS BOARD</span>
+                <span className="font-bold tracking-wider text-[10px] text-muted uppercase">CURRENT FOCUS</span>
               </div>
               <div className="flex items-center gap-1.5 text-[9px] text-[#2ECC71] font-semibold">
-                <span className="h-1.5 w-1.5 rounded-full bg-[#2ECC71] shadow-[0_0_8px_#2ECC71]" /> ONLINE
+                <span className="h-1.5 w-1.5 rounded-full bg-[#2ECC71]" /> OPEN
               </div>
             </div>
 
@@ -546,9 +502,9 @@ export default function Home() {
                 <span className="text-[#EDEDEB] font-medium">Ahmedabad, India</span>
               </div>
               <div className="flex flex-col gap-1.5 sm:col-span-2">
-                <span className="font-bold uppercase tracking-wider text-[10px] text-accent">ACTIVE BUILD</span>
+                <span className="font-bold uppercase tracking-wider text-[10px] text-accent">RIGHT NOW</span>
                 <span className="text-[#EDEDEB] font-medium leading-relaxed font-sans text-[12.5px]">
-                  Placement preparation portal for students integrated with AI (building mock interview and evaluation tools)
+                  No active build at the moment. I&apos;m reviewing recent work and deciding what to take on next.
                 </span>
               </div>
             </div>

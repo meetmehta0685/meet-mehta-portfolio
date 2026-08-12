@@ -63,12 +63,16 @@ export default function Navbar() {
       setIsScrolled(window.scrollY > 20);
     };
 
-    // Determine initial theme
-    const isDark = document.documentElement.classList.contains("dark");
-    setTheme(isDark ? "dark" : "light");
+    const themeFrame = requestAnimationFrame(() => {
+      const isDark = document.documentElement.classList.contains("dark");
+      setTheme(isDark ? "dark" : "light");
+    });
 
     window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    return () => {
+      cancelAnimationFrame(themeFrame);
+      window.removeEventListener("scroll", handleScroll);
+    };
   }, []);
 
   const toggleTheme = () => {
@@ -122,7 +126,7 @@ export default function Navbar() {
             whileTap={{ scale: 0.96 }}
             transition={{ type: "spring", stiffness: 400, damping: 15 }}
           >
-            WORK
+            PROJECTS
           </MotionLink>
           <span className="select-none text-border-custom/50">•</span>
           <MotionLink 
@@ -166,7 +170,7 @@ export default function Navbar() {
             whileTap={{ scale: 0.95 }}
             transition={{ type: "spring", stiffness: 400, damping: 15 }}
           >
-            <span className="hidden xs:inline">DOWNLOAD </span>CV
+            RESUME
           </motion.a>
         </div>
       </div>

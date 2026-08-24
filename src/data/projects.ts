@@ -4,14 +4,26 @@ export interface Project {
   summary: string;
   keyAchievements: string[];
   technologies: string[];
-  githubUrl: string;
+  githubUrl?: string;
   liveUrl: string;
 }
 
 export const projects: Project[] = [
   {
+    slug: "preproom",
+    title: "PrepRoom - AI Mock Interview Platform",
+    summary: "An adaptive mock-interview platform that builds five-question sessions around a candidate's resume, target role, interview track, experience level, prior answers, and submitted code.",
+    keyAchievements: [
+      "Integrated Groq-powered evaluation and Whisper transcription for tailored interview feedback.",
+      "Added Monaco coding, LiveKit rooms, Neon and Prisma data storage, and owner-only PDF reports."
+    ],
+    technologies: ["Next.js", "TypeScript", "Groq", "LiveKit", "Prisma", "Neon", "Auth.js"],
+    githubUrl: "https://github.com/meetmehta0685/PrepRoom",
+    liveUrl: "https://prepwithpeers.vercel.app"
+  },
+  {
     slug: "harvest-relay",
-    title: "Harvest Relay — Food Redistribution Platform",
+    title: "Harvest Relay - Food Redistribution Platform",
     summary: "A role-based food-rescue workflow connecting donors, NGOs, and volunteers through matching, dispatch, and end-to-end delivery tracking.",
     keyAchievements: [
       "Engineered top-three nearest-NGO matching, a first-acceptance flow, and end-to-end delivery tracking.",
@@ -37,7 +49,7 @@ export const projects: Project[] = [
   },
   {
     slug: "aurum-qms",
-    title: "AURUM QMS — Clinical Operations Platform",
+    title: "AURUM QMS - Clinical Operations Platform",
     summary: "A role-aware clinical operations platform spanning appointments, real-time queues, records, diagnostics, prescriptions, and connected care workflows.",
     keyAchievements: [
       "Built workflows for patients, doctors, admins, laboratory technicians, and pharmacy staff.",

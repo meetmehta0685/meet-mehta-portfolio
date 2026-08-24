@@ -163,7 +163,8 @@ export default function Home() {
                   <span className="text-accent">• OPEN</span>
                 </div>
                 <div className="flex flex-col gap-1 text-foreground/90 font-light">
-                  <div>• B.Tech CSE (AI &amp; ML) student</div>
+                  <div>• B.Tech CSE (AI &amp; ML), 2023-2027</div>
+                  <div>• CGPA: 7.48/10</div>
                   <div className="flex items-center gap-1">
                     • Based in Ahmedabad, India <MapPin size={10} className="text-muted" />
                   </div>
@@ -322,18 +323,20 @@ export default function Home() {
                         LIVE SITE <ArrowUpRight size={12} />
                       </motion.a>
                     </Magnetic>
-                    <Magnetic>
-                      <motion.a 
-                        href={project.githubUrl} 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        className="text-muted hover:text-foreground transition-colors duration-300 flex items-center gap-1.5 px-2 py-2 cursor-pointer"
-                        whileTap={{ scale: 0.96 }}
-                        transition={{ type: "spring", stiffness: 450, damping: 15 }}
-                      >
-                        <GithubIcon size={12} /> REPOSITORY
-                      </motion.a>
-                    </Magnetic>
+                    {project.githubUrl && (
+                      <Magnetic>
+                        <motion.a
+                          href={project.githubUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-muted hover:text-foreground transition-colors duration-300 flex items-center gap-1.5 px-2 py-2 cursor-pointer"
+                          whileTap={{ scale: 0.96 }}
+                          transition={{ type: "spring", stiffness: 450, damping: 15 }}
+                        >
+                          <GithubIcon size={12} /> REPOSITORY
+                        </motion.a>
+                      </Magnetic>
+                    )}
                   </div>
                 </div>
               </motion.div>
@@ -356,11 +359,11 @@ export default function Home() {
             variants={capabilitiesContainerVariants}
           >
             {[
-              { label: "LANGUAGES", skills: ["C++", "TypeScript", "JavaScript", "Python", "Java"] },
+              { label: "LANGUAGES", skills: ["C", "TypeScript", "JavaScript", "Python"] },
               { label: "FRONTEND", skills: ["React", "Next.js", "Tailwind CSS", "HTML", "CSS"] },
               { label: "BACKEND", skills: ["Node.js", "Express.js", "Hono", "FastAPI", "REST APIs"] },
               { label: "DATABASES", skills: ["PostgreSQL", "MongoDB", "Supabase", "Neon"] },
-              { label: "TOOLS & CLOUD", skills: ["AWS", "Docker", "Prisma", "Git", "GitHub", "Linux / Unix", "Vercel"] }
+              { label: "TOOLS & CLOUD", skills: ["AWS", "Docker", "Prisma", "Git", "GitHub", "Vercel"] }
             ].map((group) => (
               <motion.div key={group.label} variants={capabilityColumnVariants} className="flex flex-col gap-3">
                 <span className="text-[10.5px] font-mono font-bold tracking-wider text-muted uppercase">{group.label}</span>
@@ -524,7 +527,7 @@ export default function Home() {
                 Let&apos;s build <br /> something meaningful.
               </h2>
               <p className="text-[13px] leading-relaxed text-foreground/75 font-light max-w-[280px] font-sans">
-                I&apos;m usually available. Email is the fastest way to reach me. I usually respond within 24 hours.
+                Email is the fastest way to reach me. I usually respond within 24 hours.
               </p>
             </div>
             

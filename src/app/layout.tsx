@@ -1,24 +1,18 @@
 import type { Metadata } from "next";
-import { Playfair_Display, IBM_Plex_Mono, Outfit } from "next/font/google";
+import { Source_Sans_3, Stack_Sans_Text } from "next/font/google";
 import "./globals.css";
-import DotGridBackground from "./components/DotGridBackground";
+import { ToastProvider } from "./components/Toast";
 
-const playfair = Playfair_Display({
-  variable: "--font-playfair",
-  subsets: ["latin"],
-  weight: ["700"],
-});
-
-const ibmPlexMono = IBM_Plex_Mono({
-  variable: "--font-mono",
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "700"],
-});
-
-const outfit = Outfit({
+const sourceSans = Source_Sans_3({
   variable: "--font-sans",
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
+  display: "swap",
+});
+
+const stackSans = Stack_Sans_Text({
+  variable: "--font-display",
+  subsets: ["latin"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -35,7 +29,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${playfair.variable} ${ibmPlexMono.variable} ${outfit.variable} h-full antialiased`}
+      className={`${sourceSans.variable} ${stackSans.variable} h-full antialiased`}
       suppressHydrationWarning
     >
       <head>
@@ -45,9 +39,10 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="min-h-full flex flex-col bg-background text-foreground">
-        <DotGridBackground />
-        {children}
+      <body className="min-h-full flex flex-col bg-background text-foreground selection:bg-accent selection:text-background">
+        <ToastProvider>
+          {children}
+        </ToastProvider>
       </body>
     </html>
   );

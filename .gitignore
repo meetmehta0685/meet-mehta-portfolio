@@ -42,4 +42,5 @@ next-env.d.ts
 
 # local agent configurations
 .agents/
+.impeccable/
 skills-lock.json

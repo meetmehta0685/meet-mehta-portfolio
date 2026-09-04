@@ -1,177 +1,98 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, type MouseEvent } from "react";
 import Link from "next/link";
-import { Sun, Moon } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { Menu, Moon, Sun } from "lucide-react";
+import { sound } from "./SoundEffects";
 
-const MotionLink = motion.create(Link);
+interface NavbarProps {
+  theme?: "light" | "dark";
+  onToggleTheme?: () => void;
+}
 
-export default function Navbar() {
+const navItems = [
+  { href: "/#about", label: "About" },
+  { href: "/#work", label: "Work" },
+  { href: "/#experience", label: "Experience" },
+  { href: "/#contact", label: "Contact" },
+];
+
+export default function Navbar({ theme = "light", onToggleTheme }: NavbarProps) {
   const [isScrolled, setIsScrolled] = useState(false);
-  const [theme, setTheme] = useState<"light" | "dark">("light");
-  
-  // Typewriter animation state
-  const [text, setText] = useState("");
-  const [isTyping, setIsTyping] = useState(true);
-  const fullText = "Meet Mehta";
-  const timerRef = useRef<NodeJS.Timeout | null>(null);
-
-  const startTyping = (speedMultiplier = 1) => {
-    if (timerRef.current) {
-      clearTimeout(timerRef.current);
-    }
-    
-    setIsTyping(true);
-    let index = 0;
-    
-    const type = () => {
-      setText(fullText.slice(0, index + 1));
-      index++;
-      if (index < fullText.length) {
-        const speed = (80 + Math.random() * 40) * speedMultiplier;
-        timerRef.current = setTimeout(type, speed);
-      } else {
-        setIsTyping(false);
-      }
-    };
-    
-    type();
-  };
 
   useEffect(() => {
-    // Initial typing sequence on mount
-    timerRef.current = setTimeout(() => {
-      startTyping(1.2);
-    }, 400);
-
-    return () => {
-      if (timerRef.current) {
-        clearTimeout(timerRef.current);
-      }
-    };
+    const handleScroll = () => setIsScrolled(window.scrollY > 12);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const handleMouseEnter = () => {
-    if (!isTyping) {
-      startTyping(0.6); // faster typing on hover
-    }
-  };
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
-    };
-
-    const themeFrame = requestAnimationFrame(() => {
-      const isDark = document.documentElement.classList.contains("dark");
-      setTheme(isDark ? "dark" : "light");
-    });
-
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      cancelAnimationFrame(themeFrame);
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
-
-  const toggleTheme = () => {
-    const nextTheme = theme === "light" ? "dark" : "light";
-    setTheme(nextTheme);
-    if (nextTheme === "dark") {
-      document.documentElement.classList.add("dark");
-      localStorage.setItem("theme", "dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-      localStorage.setItem("theme", "light");
-    }
+  const closeMobileMenu = (event: MouseEvent<HTMLElement>) => {
+    event.currentTarget.closest("details")?.removeAttribute("open");
+    sound.click();
   };
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 h-[64px] flex items-center transition-all duration-300 ${
+      className={`fixed inset-x-0 top-0 z-40 border-b transition-colors duration-200 ${
         isScrolled
-          ? "bg-background/80 backdrop-blur-md border-b border-border-custom"
-          : "bg-transparent border-b border-transparent"
+          ? "border-border-custom bg-background/95 backdrop-blur-md"
+          : "border-transparent bg-background/80"
       }`}
     >
-      <div className="w-full max-w-4xl mx-auto px-6 flex items-center justify-between font-mono">
-        {/* LOGO / MONOGRAM */}
-        <MotionLink
+      <div className="mx-auto flex h-[72px] w-full max-w-6xl items-center justify-between px-5 sm:px-8">
+        <Link
           href="/"
-          className="text-[13px] font-bold tracking-widest hover:text-accent transition-editorial flex items-center group/logo uppercase"
-          onMouseEnter={handleMouseEnter}
-          whileTap={{ scale: 0.97 }}
-          transition={{ type: "spring", stiffness: 400, damping: 15 }}
+          className="text-[15px] font-bold tracking-[-0.02em] text-foreground transition-colors hover:text-accent"
+          onClick={() => sound.click()}
         >
-          <span>{text}</span>
-          <span className={`inline-block w-1.5 h-3.5 bg-accent ml-1 ${isTyping ? "opacity-100" : "cursor-blink"}`} />
-        </MotionLink>
+          Meet Mehta
+        </Link>
 
-
-        {/* NAVIGATION LINKS */}
-        <nav className="hidden sm:flex items-center gap-5 text-[10.5px] tracking-wider text-muted-foreground font-semibold">
-          <MotionLink 
-            href="/#about" 
-            className="hover:text-foreground transition-editorial uppercase"
-            whileTap={{ scale: 0.96 }}
-            transition={{ type: "spring", stiffness: 400, damping: 15 }}
-          >
-            ABOUT
-          </MotionLink>
-          <span className="select-none text-border-custom/50">•</span>
-          <MotionLink 
-            href="/#work" 
-            className="hover:text-foreground transition-editorial uppercase"
-            whileTap={{ scale: 0.96 }}
-            transition={{ type: "spring", stiffness: 400, damping: 15 }}
-          >
-            PROJECTS
-          </MotionLink>
-          <span className="select-none text-border-custom/50">•</span>
-          <MotionLink 
-            href="/#contact" 
-            className="hover:text-foreground transition-editorial uppercase"
-            whileTap={{ scale: 0.96 }}
-            transition={{ type: "spring", stiffness: 400, damping: 15 }}
-          >
-            CONTACT
-          </MotionLink>
+        <nav aria-label="Primary navigation" className="hidden items-center gap-7 md:flex">
+          {navItems.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className="nav-link text-[14px] font-medium text-muted-foreground"
+              onClick={() => sound.click()}
+            >
+              {item.label}
+            </Link>
+          ))}
         </nav>
 
-        {/* RIGHT ACTIONS */}
-        <div className="flex items-center gap-3">
-          {/* THEME TOGGLE */}
-          <motion.button
-            onClick={toggleTheme}
-            className="flex items-center justify-center w-8 h-8 border border-border-custom bg-border-custom/5 hover:bg-border-custom/20 transition-all duration-250 text-foreground focus:outline-none cursor-pointer overflow-hidden rounded-none shadow-xs"
-            aria-label="Toggle Theme"
-            whileTap={{ scale: 0.92 }}
-            transition={{ type: "spring", stiffness: 400, damping: 15 }}
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() => onToggleTheme?.()}
+            className="icon-button"
+            aria-label={theme === "light" ? "Use dark theme" : "Use light theme"}
+            title={theme === "light" ? "Use dark theme" : "Use light theme"}
           >
-            <AnimatePresence mode="wait" initial={false}>
-              <motion.div
-                key={theme}
-                initial={{ y: -12, opacity: 0, rotate: -90 }}
-                animate={{ y: 0, opacity: 1, rotate: 0 }}
-                exit={{ y: 12, opacity: 0, rotate: 90 }}
-                transition={{ type: "spring", stiffness: 300, damping: 20 }}
-              >
-                {theme === "light" ? <Moon size={13} /> : <Sun size={13} />}
-              </motion.div>
-            </AnimatePresence>
-          </motion.button>
+            {theme === "light" ? <Moon size={17} /> : <Sun size={17} />}
+          </button>
 
-          {/* RESUME BUTTON */}
-          <motion.a
-            href="/resume.pdf"
-            download
-            className="border border-foreground text-[10.5px] px-3.5 py-1.5 bg-transparent text-foreground hover:bg-foreground hover:text-background font-semibold tracking-wider transition-editorial text-center cursor-pointer uppercase rounded-none"
-            whileTap={{ scale: 0.95 }}
-            transition={{ type: "spring", stiffness: 400, damping: 15 }}
-          >
-            RESUME
-          </motion.a>
+          <a href="/resume.pdf" download className="header-resume button-secondary" onClick={() => sound.click()}>
+            Résumé
+          </a>
+
+          <details className="mobile-menu-button relative">
+            <summary className="icon-button" aria-label="Toggle navigation">
+              <Menu size={19} />
+            </summary>
+            <nav id="mobile-navigation" aria-label="Mobile navigation" className="fixed inset-x-0 top-[72px] border-y border-border-custom bg-background px-5 py-4 shadow-[0_18px_40px_rgba(0,0,0,0.12)] sm:px-8">
+              <div className="mx-auto grid max-w-6xl grid-cols-2 gap-2">
+                {navItems.map((item) => (
+                  <Link key={item.href} href={item.href} onClick={closeMobileMenu} className="flex min-h-12 items-center rounded-lg px-3 text-base font-semibold text-foreground transition-colors hover:bg-border-custom/35 hover:text-accent">
+                    {item.label}
+                  </Link>
+                ))}
+                <a href="/resume.pdf" download onClick={closeMobileMenu} className="col-span-2 mt-1 flex min-h-12 items-center justify-center rounded-lg bg-foreground px-4 text-sm font-semibold text-background">
+                  Download résumé
+                </a>
+              </div>
+            </nav>
+          </details>
         </div>
       </div>
     </header>

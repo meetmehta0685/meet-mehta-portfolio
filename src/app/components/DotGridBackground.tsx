@@ -4,20 +4,20 @@ import { useEffect, useRef } from "react";
 
 export default function DotGridBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const mouseRef = useRef({ x: -1000, y: -1000 });
+  const mouseRef = useRef({ x: -1000, y: -1000, targetX: -1000, targetY: -1000 });
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
+    const rawCtx = canvas.getContext("2d", { alpha: true });
+    if (!rawCtx) return;
+    const ctx: CanvasRenderingContext2D = rawCtx;
 
     let animationFrameId: number;
     let width = 0;
     let height = 0;
 
-    // Cache computed colors
     let dotColor = "rgba(0,0,0,0.1)";
     let accentColor = "#D35400";
 
@@ -29,7 +29,6 @@ export default function DotGridBackground() {
 
     updateColors();
 
-    // Listen to theme toggles via MutationObserver on HTML class list changes
     const observer = new MutationObserver(() => {
       updateColors();
     });
@@ -39,66 +38,72 @@ export default function DotGridBackground() {
       attributeFilter: ["class"],
     });
 
-    const handleResize = () => {
-      const dpr = window.devicePixelRatio || 1;
-      width = window.innerWidth;
-      height = window.innerHeight;
-      canvas.width = width * dpr;
-      canvas.height = height * dpr;
-      canvas.style.width = `${width}px`;
-      canvas.style.height = `${height}px`;
-      ctx.scale(dpr, dpr);
-    };
-
-    handleResize();
-    window.addEventListener("resize", handleResize);
-
-    const handleMouseMove = (e: MouseEvent) => {
-      mouseRef.current.x = e.clientX;
-      mouseRef.current.y = e.clientY;
-    };
-
-    const handleMouseLeave = () => {
-      mouseRef.current.x = -1000;
-      mouseRef.current.y = -1000;
-    };
-
-    window.addEventListener("mousemove", handleMouseMove);
-    document.addEventListener("mouseleave", handleMouseLeave);
-
+    let isRunning = false;
+    let prefersReducedMotion = false;
     const gridGap = 32;
 
-    const render = () => {
+    function drawStatic() {
       ctx.clearRect(0, 0, width, height);
-
-      const mouse = mouseRef.current;
       const cols = Math.ceil(width / gridGap) + 1;
       const rows = Math.ceil(height / gridGap) + 1;
+      ctx.fillStyle = dotColor;
+      ctx.globalAlpha = 0.35;
+
+      for (let i = 0; i < cols; i++) {
+        for (let j = 0; j < rows; j++) {
+          ctx.beginPath();
+          ctx.arc(i * gridGap, j * gridGap, 1, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+    }
+
+    function render() {
+      if (document.hidden) {
+        isRunning = false;
+        return;
+      }
+
+      if (prefersReducedMotion) {
+        drawStatic();
+        isRunning = false;
+        return;
+      }
+
+      // Smooth mouse interpolation
+      const m = mouseRef.current;
+      const dxMouse = m.targetX - m.x;
+      const dyMouse = m.targetY - m.y;
+      m.x += dxMouse * 0.18;
+      m.y += dyMouse * 0.18;
+
+      ctx.clearRect(0, 0, width, height);
+
+      const cols = Math.ceil(width / gridGap) + 1;
+      const rows = Math.ceil(height / gridGap) + 1;
+      const maxDist = 130;
+      const maxDistSq = maxDist * maxDist;
 
       for (let i = 0; i < cols; i++) {
         for (let j = 0; j < rows; j++) {
           const x = i * gridGap;
           const y = j * gridGap;
 
-          const dx = mouse.x - x;
-          const dy = mouse.y - y;
+          const dx = m.x - x;
+          const dy = m.y - y;
           const distSq = dx * dx + dy * dy;
-          const maxDist = 120;
-          const maxDistSq = maxDist * maxDist;
 
           let r = 1;
           let color = dotColor;
 
           if (distSq < maxDistSq) {
             const dist = Math.sqrt(distSq);
-            const ratio = 1 - dist / maxDist; // 0 to 1 based on proximity
-            r = 1 + ratio * 2.5; // grows from 1px to 3.5px
-            
-            // Mix dotColor and accentColor based on ratio
+            const ratio = 1 - dist / maxDist;
+            r = 1 + ratio * 2.8;
             color = accentColor;
-            ctx.globalAlpha = 0.2 + ratio * 0.8; // get brighter near cursor
+            ctx.globalAlpha = 0.2 + ratio * 0.8;
           } else {
-            ctx.globalAlpha = 0.35; // base opacity for grid dots
+            ctx.globalAlpha = 0.35;
           }
 
           ctx.fillStyle = color;
@@ -108,10 +113,83 @@ export default function DotGridBackground() {
         }
       }
 
-      animationFrameId = requestAnimationFrame(render);
+      // Idle detection: if mouse movement has settled, stop loop until next move
+      const isSettled = Math.abs(dxMouse) < 0.05 && Math.abs(dyMouse) < 0.05;
+      if (isSettled && (m.x < -500 || (Math.abs(m.targetX - m.x) < 0.01 && Math.abs(m.targetY - m.y) < 0.01))) {
+        isRunning = false;
+      } else {
+        animationFrameId = requestAnimationFrame(render);
+      }
+    }
+
+    function startLoop() {
+      if (!isRunning && !prefersReducedMotion) {
+        isRunning = true;
+        animationFrameId = requestAnimationFrame(render);
+      }
+    }
+
+    // Check prefers-reduced-motion
+    if (typeof window !== "undefined") {
+      const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+      prefersReducedMotion = motionQuery.matches;
+      const motionListener = (e: MediaQueryListEvent) => {
+        prefersReducedMotion = e.matches;
+        if (!prefersReducedMotion) {
+          startLoop();
+        } else {
+          drawStatic();
+        }
+      };
+      motionQuery.addEventListener("change", motionListener);
+    }
+
+    const handleResize = () => {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = width * dpr;
+      canvas.height = height * dpr;
+      canvas.style.width = `${width}px`;
+      canvas.style.height = `${height}px`;
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.scale(dpr, dpr);
+
+      if (prefersReducedMotion) {
+        drawStatic();
+      } else {
+        startLoop();
+      }
     };
 
-    render();
+    handleResize();
+    window.addEventListener("resize", handleResize);
+
+    const handleMouseMove = (e: MouseEvent) => {
+      if (prefersReducedMotion) return;
+      mouseRef.current.targetX = e.clientX;
+      mouseRef.current.targetY = e.clientY;
+      if (mouseRef.current.x < -500) {
+        mouseRef.current.x = e.clientX;
+        mouseRef.current.y = e.clientY;
+      }
+      startLoop();
+    };
+
+    const handleMouseLeave = () => {
+      mouseRef.current.targetX = -1000;
+      mouseRef.current.targetY = -1000;
+      startLoop();
+    };
+
+    window.addEventListener("mousemove", handleMouseMove, { passive: true });
+    document.addEventListener("mouseleave", handleMouseLeave);
+
+    if (!prefersReducedMotion) {
+      startLoop();
+    } else {
+      drawStatic();
+    }
 
     return () => {
       cancelAnimationFrame(animationFrameId);

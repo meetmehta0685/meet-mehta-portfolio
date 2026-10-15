@@ -12,8 +12,8 @@ import { GithubIcon, LinkedinIcon } from "./components/Icons";
 const skillGroups = [
   { label: "Languages", skills: ["TypeScript", "JavaScript", "Python", "C"] },
   { label: "Frontend", skills: ["React", "Next.js", "Tailwind CSS", "HTML", "CSS"] },
-  { label: "Backend & data", skills: ["Node.js", "Express", "Hono", "PostgreSQL", "Supabase", "Prisma"] },
-  { label: "Tools", skills: ["AWS", "Docker", "Git", "GitHub", "Vercel"] },
+  { label: "Backend & data", skills: ["Node.js", "Express.js", "Hono", "FastAPI", "REST APIs", "PostgreSQL", "Supabase", "Neon", "Prisma", "MongoDB"] },
+  { label: "AI, realtime & tools", skills: ["Groq", "OpenRouter", "Whisper", "LiveKit", "Ably", "AWS", "Docker", "Git", "GitHub", "Vercel"] },
 ];
 
 const certifications = [
@@ -111,7 +111,7 @@ export default function Home() {
           <h2>A builder between interface and infrastructure.</h2>
           <div className="about-copy">
             <p>I study Computer Science and Engineering at Adani University, with a specialization in Artificial Intelligence and Machine Learning. I build full-stack products around real operational work, including food redistribution, interview preparation, and clinical operations.</p>
-            <p>During my UI/UX internship at Appendo Consulting and Service, I contributed to Tyroo Placement OS with Hono, Supabase, and Prisma. Right now I&apos;m strengthening my full-stack foundations and deciding what to build next.</p>
+            <p>During my full-stack internship at Appendo Consulting and Services, I built a placement portal for SVIT with Hono, Supabase, and Prisma, and shared product feedback with the Tyroo.ai team. Right now I&apos;m strengthening my full-stack foundations and deciding what to build next.</p>
           </div>
           <dl className="about-facts">
             <div><dt>Location</dt><dd><MapPin size={16} aria-hidden="true" /> Ahmedabad, India</dd></div>
@@ -170,12 +170,13 @@ export default function Home() {
             <h2>Work and credentials.</h2>
             <article className="experience-entry">
               <div className="experience-date">May to Jul 2026 · Vadodara</div>
-              <h3>Appendo Consulting and Service</h3>
-              <p className="experience-role">UI/UX Intern</p>
+              <h3>Appendo Consulting and Services</h3>
+              <p className="experience-role">Full Stack Developer Intern</p>
               <ul>
-                <li>Built student dashboards, a placement-drive calendar, and analytics modules for Tyroo Placement OS.</li>
-                <li>Turned product requirements and prototypes into responsive workflows for placement management and mock interviews.</li>
-                <li>Worked across product and engineering on reusable, accessible interface patterns.</li>
+                <li>Built a placement portal for SVIT with student dashboards, a placement-drive calendar, and analytics modules using Hono, Supabase, and Prisma.</li>
+                <li>Translated product requirements and prototypes into responsive desktop and mobile workflows for placement management and mock interviews.</li>
+                <li>Worked with product and engineering to refine reusable, accessible interface patterns across student-facing screens.</li>
+                <li>Shared product feedback with the Tyroo.ai team during feature development.</li>
               </ul>
             </article>
           </div>

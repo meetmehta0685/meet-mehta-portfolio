@@ -1,218 +1,286 @@
-"use client";
-
-import { useState } from "react";
+import type { CSSProperties, ReactNode } from "react";
 import Image from "next/image";
-import { ArrowDown, ArrowUpRight, Award, Copy, FileText, Mail, MapPin, Phone } from "lucide-react";
-import ProjectDrawer from "./components/ProjectDrawer";
-import { projects, type Project } from "@/data/projects";
-import { sound } from "./components/SoundEffects";
-import { useToast } from "./components/Toast";
-import { GithubIcon, LinkedinIcon } from "./components/Icons";
+import Chevron from "./components/Chevron";
+import CopyButton from "./components/CopyButton";
+import LoopVideo from "./components/LoopVideo";
+import RevealObserver from "./components/RevealObserver";
+import WorkLedger from "./components/WorkLedger";
+import { projects, shotsOf, domainOf, type Project } from "@/data/projects";
+import { certifications, contact, education, internship, skillGroups } from "@/data/profile";
 
-const skillGroups = [
-  { label: "Languages", skills: ["TypeScript", "JavaScript", "Python", "C"] },
-  { label: "Frontend", skills: ["React", "Next.js", "Tailwind CSS", "HTML", "CSS"] },
-  { label: "Backend & data", skills: ["Node.js", "Express.js", "Hono", "FastAPI", "REST APIs", "PostgreSQL", "Supabase", "Neon", "Prisma", "MongoDB"] },
-  { label: "AI, realtime & tools", skills: ["Groq", "OpenRouter", "Whisper", "LiveKit", "Ably", "AWS", "Docker", "Git", "GitHub", "Vercel"] },
-];
+const frictions = ["Offers expire.", "Queues pile up.", "Handoffs go missing."];
 
-const certifications = [
-  { title: "AWS Academy Cloud Architecting", date: "Apr 2026", url: "https://www.credly.com/go/xSoxYcJe" },
-  { title: "AWS Academy Cloud Foundations", date: "Nov 2025", url: "https://www.credly.com/go/oZ1FM0T3" },
-  { title: "AWS Academy Machine Learning Foundations", date: "Nov 2025", url: "https://www.credly.com/go/zSWYqx4B" },
-];
+const line = (i: number) => ({ "--i": i }) as CSSProperties;
 
-export default function Home() {
-  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
-  const { showToast } = useToast();
+function TextLink({ href, children, download, external }: { href: string; children: ReactNode; download?: boolean; external?: boolean }) {
+  return (
+    <a
+      href={href}
+      className="text-link t-learn"
+      download={download}
+      {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+    >
+      {children}
+      <Chevron />
+    </a>
+  );
+}
 
-  const openProject = (project: Project) => {
-    sound.click();
-    setSelectedProject(project);
-  };
+function Highlight({ tone, children }: { tone: "blue" | "mint" | "sun" | "coral"; children: ReactNode }) {
+  return <mark data-tone={tone}>{children}</mark>;
+}
 
-  const copyContact = async (value: string, label: string) => {
-    await navigator.clipboard.writeText(value);
-    sound.pop();
-    showToast(`${label} copied`);
-  };
+function Chapter({ project, index }: { project: Project; index: number }) {
+  const shots = shotsOf(project);
+  const theme = {
+    "--field": project.theme.field,
+    "--ink": project.theme.ink,
+    "--soft": project.theme.soft,
+    "--accent": project.theme.accent,
+  } as CSSProperties;
 
   return (
-    <main className="folio-page">
-      <section className="folio-sheet" aria-labelledby="folio-title">
-        <div className="folio-paper" aria-hidden="true" />
+    <article id={project.slug} className="chapter" data-flip={index % 2 === 1} style={theme} aria-labelledby={`${project.slug}-name`}>
+      <div className="chapter-head t-stagger" data-reveal>
+        <h3 id={`${project.slug}-name`} className="t-stagger-line" style={line(0)}>{project.name}</h3>
+        <p className="chapter-kind t-stagger-line" style={line(1)}>{project.kind}</p>
+        <p className="chapter-summary t-stagger-line" style={line(2)}>{project.summary}</p>
+      </div>
 
-        <figure className="folio-portrait">
-          <Image
-            src="/plates/portrait-mehta.jpg"
-            alt="Meet Mehta"
-            fill
-            priority
-            unoptimized
-            sizes="(max-width: 767px) 100vw, 44vw"
-            className="folio-portrait-image"
-          />
+      <div className="chapter-shots">
+        <figure className="shot-desktop">
+          <Image src={shots.desktop} alt={`${project.name} landing page on desktop`} width={2880} height={1800} sizes="(max-width: 899px) 100vw, 66vw" />
+          <LoopVideo src={shots.loop} />
         </figure>
+        <figure className="shot-mobile">
+          <Image src={shots.mobile} alt={`${project.name} landing page on a phone`} width={1170} height={2532} sizes="(max-width: 899px) 45vw, 22vw" />
+        </figure>
+      </div>
 
-        <header className="folio-header">
-          <a href="#top" className="identity-name">Meet Mehta</a>
-          <span className="identity-role">Full-stack developer</span>
-          <span className="identity-location">Ahmedabad, India</span>
-          <nav className="folio-nav" aria-label="Primary navigation">
-            <a href="#about"><span>01</span> About</a>
-            <a href="#work"><span>02</span> Work</a>
-            <a href="#capabilities"><span>03</span> Stack</a>
-            <a href="#contact"><span>04</span> Contact</a>
+      <div className="chapter-body t-stagger" data-reveal>
+        <ul className="chapter-achievements">
+          {project.keyAchievements.map((achievement, i) => (
+            <li key={achievement} className="t-stagger-line" style={line(i)}>{achievement}</li>
+          ))}
+        </ul>
+        <p className="chapter-stack t-stagger-line" style={line(1)}>
+          <span className="visually-hidden">Built with </span>
+          {project.technologies.join(", ")}
+        </p>
+        <p className="chapter-links t-stagger-line" style={line(2)}>
+          <TextLink href={project.liveUrl} external>Visit {domainOf(project.liveUrl)}</TextLink>
+          {project.githubUrl && <TextLink href={project.githubUrl} external>Read the source</TextLink>}
+        </p>
+      </div>
+    </article>
+  );
+}
+
+export default function Home() {
+  return (
+    <>
+      <main>
+        <header className="hero">
+          <div className="hero-intro t-stagger t-load">
+            <p className="hero-sentence t-stagger-line" style={line(1)}>
+              Full-stack developer. I build software for work that has to move.
+            </p>
+            <a href="#work" className="button t-stagger-line" style={line(2)}>See the work</a>
+          </div>
+
+          <nav className="hero-nav" aria-label="Primary">
+            <a href="#work">Work</a>
+            <a href="#about">About</a>
+            <a href="#record">Record</a>
+            <a href="#contact">Contact</a>
           </nav>
+
+          <div className="hero-name">
+            <h1 className="wordmark t-load-name">Meet Mehta</h1>
+          </div>
+
+          <p className="hero-place">
+            {contact.city}
+            <span>{education.degree}, {education.school}</span>
+          </p>
+
+          <p className="hero-links">
+            <TextLink href={contact.github} external>GitHub</TextLink>
+            <TextLink href={contact.linkedin} external>LinkedIn</TextLink>
+            <TextLink href={contact.resume} download>Résumé</TextLink>
+          </p>
+
+          <figure className="hero-phone">
+            <Image src={shotsOf(projects[0]).mobile} alt={`${projects[0].name} on a phone`} width={1170} height={2532} sizes="100vw" preload />
+          </figure>
         </header>
 
-        <div className="folio-tab" aria-hidden="true">01</div>
-
-        <div id="top" className="folio-hero-copy">
-          <h1 id="folio-title">
-            <span className="headline-line headline-line-1">Hello</span>
-            <span className="headline-line headline-line-2">I am</span>
-            <span className="headline-line headline-line-3">Meet</span>
-          </h1>
-          <p className="folio-summary">
-            Operational workflows are complex.<br />
-            I build software that makes them reliable, observable, and efficient.
-          </p>
-        </div>
-
-        <div className="folio-register" id="work">
-          {projects.map((project, index) => (
-            <button
-              key={project.slug}
-              type="button"
-              className="folio-project-row"
-              onClick={() => openProject(project)}
-              aria-label={`Open details for ${project.title}`}
-            >
-              <span className="folio-project-number">{String(index + 1).padStart(2, "0")}</span>
-              <span className="folio-project-title">{project.title}</span>
-              <svg className="folio-project-arrow" viewBox="0 0 48 20" fill="none" aria-hidden="true">
-                <path d="M1 10H45M36 2L45 10L36 18" stroke="currentColor" strokeWidth="1.4" />
-              </svg>
-            </button>
-          ))}
-        </div>
-
-        <span className="registration-mark registration-top-left" aria-hidden="true" />
-        <span className="registration-mark registration-mid-left" aria-hidden="true" />
-        <span className="registration-mark registration-bottom-left" aria-hidden="true" />
-        <span className="registration-mark registration-mid-right" aria-hidden="true" />
-        <span className="registration-mark registration-bottom-right" aria-hidden="true" />
-      </section>
-
-      <section id="about" className="folio-section about-section">
-        <div className="folio-section-label">About</div>
-        <div className="folio-section-body about-layout">
-          <h2>A builder between interface and infrastructure.</h2>
-          <div className="about-copy">
-            <p>I study Computer Science and Engineering at Adani University, with a specialization in Artificial Intelligence and Machine Learning. I build full-stack products around real operational work, including food redistribution, interview preparation, and clinical operations.</p>
-            <p>During my full-stack internship at Appendo Consulting and Services, I built a placement portal for SVIT with Hono, Supabase, and Prisma, and shared product feedback with the Tyroo.ai team. Right now I&apos;m strengthening my full-stack foundations and deciding what to build next.</p>
+        <section className="statement" aria-labelledby="statement-heading">
+          <div className="staircase t-stagger" data-reveal>
+            <ul aria-label="What goes wrong in operational work">
+              {frictions.map((text, i) => (
+                <li key={text} className="t-stagger-line" style={line(i)}>{text}</li>
+              ))}
+            </ul>
+            <h2 id="statement-heading">
+              <span className="t-stagger-line" style={line(3)}>I build the software</span>
+              <span className="t-stagger-line" style={line(4)}>that keeps work moving.</span>
+            </h2>
           </div>
-          <dl className="about-facts">
-            <div><dt>Location</dt><dd><MapPin size={16} aria-hidden="true" /> Ahmedabad, India</dd></div>
-            <div><dt>Degree</dt><dd>B.Tech CSE, AI &amp; ML</dd></div>
-            <div><dt>Study</dt><dd>2023 to 2027</dd></div>
-            <div><dt>CGPA</dt><dd>7.48 / 10</dd></div>
-          </dl>
-        </div>
-      </section>
-
-      <section className="folio-section project-section" aria-labelledby="project-heading">
-        <div className="folio-section-label">Selected work</div>
-        <div className="folio-section-body">
-          <h2 id="project-heading">Four systems built around work that has to move.</h2>
-          <div className="project-plates">
-            {projects.map((project, index) => (
-              <article className="project-plate" key={project.slug}>
-                <div className="project-plate-index">{String(index + 1).padStart(2, "0")}</div>
-                <div className="project-plate-main">
-                  <h3>{project.title}</h3>
-                  <p className="project-summary">{project.summary}</p>
-                  <div className="project-actions">
-                    <button type="button" onClick={() => openProject(project)}>Inspect project <ArrowUpRight size={16} aria-hidden="true" /></button>
-                    <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" onClick={() => sound.click()}>Open live site <ArrowUpRight size={16} aria-hidden="true" /></a>
-                  </div>
-                </div>
-                <ul className="project-evidence" aria-label={`${project.title} key features`}>
-                  {project.keyAchievements.slice(0, 2).map((achievement) => <li key={achievement}>{achievement}</li>)}
-                </ul>
-                <p className="project-stack">{project.technologies.join(" · ")}</p>
-              </article>
-            ))}
+          <div className="statement-photos">
+            <figure>
+              <Image src="/me/booth.jpg" alt="Meet Mehta smiling in a restaurant booth" width={1800} height={2400} sizes="(max-width: 899px) 50vw, 18vw" />
+            </figure>
+            <figure>
+              <Image src="/me/evening.jpg" alt="Meet Mehta outdoors in the evening, in a white shirt" width={768} height={1024} sizes="(max-width: 899px) 50vw, 18vw" />
+            </figure>
           </div>
-        </div>
-      </section>
+          <p className="statement-note">Operational workflows are complex. I build software that makes them reliable, observable, and efficient.</p>
+        </section>
 
-      <section id="capabilities" className="folio-section capabilities-section">
-        <div className="folio-section-label">Stack</div>
-        <div className="folio-section-body">
-          <h2>Tools selected for the job, not the label.</h2>
-          <div className="capability-register">
-            {skillGroups.map((group) => (
-              <div key={group.label}>
-                <h3>{group.label}</h3>
-                <ul>{group.skills.map((skill) => <li key={skill}>{skill}</li>)}</ul>
+        <section id="work" className="work" aria-labelledby="work-heading">
+          <div className="work-intro t-stagger" data-reveal>
+            <h2 id="work-heading" className="section-heading t-stagger-line">Four products, all live.</h2>
+            <p className="lead t-stagger-line" style={line(1)}>Each one handles a real workflow end to end, and each is running today. Pick one to read how it works.</p>
+          </div>
+          <WorkLedger projects={projects} />
+        </section>
+
+        {projects.map((project, index) => (
+          <Chapter key={project.slug} project={project} index={index} />
+        ))}
+
+        <section id="about" className="about" aria-labelledby="about-heading">
+          <h2 id="about-heading" className="section-heading t-stagger" data-reveal>
+            <span className="t-stagger-line">About</span>
+          </h2>
+          <div className="about-columns t-stagger" data-reveal>
+            <p className="t-stagger-line">
+              <strong>I&apos;m Meet.</strong> I study Computer Science and Engineering at <Highlight tone="blue">Adani University</Highlight> in Ahmedabad,
+              specialising in <Highlight tone="mint">Artificial Intelligence and Machine Learning</Highlight>, from 2023 to 2027 with a CGPA of 7.48 out of 10.
+              I build full-stack products around real operational work: food redistribution, interview preparation, IELTS practice, and clinical operations.
+            </p>
+            <p className="t-stagger-line" style={line(1)}>
+              From May to July 2026 I was a <Highlight tone="sun">Full Stack Developer Intern at Appendo</Highlight> in Vadodara, where I built a placement portal
+              for SVIT with Hono, Supabase, and Prisma, and shared product feedback with the Tyroo.ai team. I also hold three <Highlight tone="coral">AWS Academy</Highlight>{" "}credentials.
+              Right now I&apos;m strengthening my full-stack foundations and deciding what to build next.
+            </p>
+            <p className="about-close t-stagger-line" style={line(2)}>
+              <a href="#contact">If you have a role in mind, write to me.</a>
+            </p>
+          </div>
+        </section>
+
+        <section id="record" className="record" aria-labelledby="record-heading">
+          <h2 id="record-heading" className="section-heading">Experience and credentials</h2>
+
+          <div className="record-main">
+            <div className="record-group t-stagger" data-reveal>
+              <h3 className="t-stagger-line">Experience</h3>
+              <div className="record-row t-stagger-line" style={line(1)}>
+                <span><strong>{internship.role}</strong>, {internship.company}</span>
+                <span className="record-value">{internship.when}, {internship.where}</span>
+              </div>
+              <ul className="record-notes">
+                {internship.notes.map((note, i) => (
+                  <li key={note} className="t-stagger-line" style={line(i + 2)}>{note}</li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="record-group t-stagger" data-reveal>
+              <h3 className="t-stagger-line">Education</h3>
+              <div className="record-row t-stagger-line" style={line(1)}>
+                <span><strong>{education.degree}</strong>, {education.school}</span>
+                <span className="record-value">{education.years}</span>
+              </div>
+              <div className="record-row t-stagger-line" style={line(2)}>
+                <span>Cumulative grade point average</span>
+                <span className="record-value">{education.cgpa}</span>
+              </div>
+            </div>
+
+            <div className="record-group t-stagger" data-reveal>
+              <h3 className="t-stagger-line">Certifications</h3>
+              {certifications.map((cert, i) => (
+                <a key={cert.title} href={cert.url} target="_blank" rel="noopener noreferrer" className="record-row record-link t-learn t-stagger-line" style={line(i + 1)}>
+                  <span>{cert.title}<Chevron /></span>
+                  <span className="record-value">{cert.date}</span>
+                </a>
+              ))}
+            </div>
+          </div>
+
+          <div className="record-stack t-stagger" data-reveal>
+            <h3 className="t-stagger-line">Stack</h3>
+            {skillGroups.map((group, i) => (
+              <div key={group.label} className="stack-group t-stagger-line" style={line(i + 1)}>
+                <h4>{group.label}</h4>
+                <p>{group.skills.join(", ")}</p>
               </div>
             ))}
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section id="experience" className="folio-section experience-section">
-        <div className="folio-section-label">Experience</div>
-        <div className="folio-section-body experience-layout">
-          <div>
-            <h2>Work and credentials.</h2>
-            <article className="experience-entry">
-              <div className="experience-date">May to Jul 2026 · Vadodara</div>
-              <h3>Appendo Consulting and Services</h3>
-              <p className="experience-role">Full Stack Developer Intern</p>
-              <ul>
-                <li>Built a placement portal for SVIT with student dashboards, a placement-drive calendar, and analytics modules using Hono, Supabase, and Prisma.</li>
-                <li>Translated product requirements and prototypes into responsive desktop and mobile workflows for placement management and mock interviews.</li>
-                <li>Worked with product and engineering to refine reusable, accessible interface patterns across student-facing screens.</li>
-                <li>Shared product feedback with the Tyroo.ai team during feature development.</li>
-              </ul>
-            </article>
+        <section id="contact" className="contact" aria-labelledby="contact-heading">
+          <div className="contact-top">
+            <h2 id="contact-heading" className="t-stagger-line">Have a role or project in mind?</h2>
+            <p className="t-stagger-line" style={line(1)}>Email is the fastest way to reach me. I usually respond within 24 hours.</p>
           </div>
-          <div className="certification-register">
-            <h3>Certifications</h3>
-            {certifications.map((cert) => (
-              <a key={cert.title} href={cert.url} target="_blank" rel="noopener noreferrer" onClick={() => sound.click()}>
-                <Award size={18} aria-hidden="true" />
-                <span><strong>{cert.title}</strong><small>AWS Academy · {cert.date}</small></span>
-                <ArrowUpRight size={16} aria-hidden="true" />
-              </a>
+
+          <a href={`mailto:${contact.email}`} className="contact-email">
+            <span>mehtameet685@</span><span>gmail.com</span>
+          </a>
+
+          <div className="contact-foot">
+            <p className="contact-phone">
+              <a href={`tel:${contact.phoneHref}`}>{contact.phone}</a>
+              <CopyButton value={contact.phoneHref} label="phone number" />
+            </p>
+            <p className="contact-links">
+              <TextLink href={contact.linkedin} external>LinkedIn</TextLink>
+              <TextLink href={contact.github} external>GitHub</TextLink>
+              <TextLink href={contact.resume} download>Download résumé</TextLink>
+            </p>
+          </div>
+        </section>
+      </main>
+
+      <footer className="footer">
+        <div className="footer-columns">
+          <div>
+            <p>Pages</p>
+            <a href="#work">Work</a>
+            <a href="#about">About</a>
+            <a href="#record">Record</a>
+            <a href="#contact">Contact</a>
+          </div>
+          <div>
+            <p>Elsewhere</p>
+            <a href={contact.github} target="_blank" rel="noopener noreferrer">GitHub</a>
+            <a href={contact.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a>
+            <a href={contact.resume} download>Résumé</a>
+          </div>
+          <div>
+            <p>Contact</p>
+            <a href={`mailto:${contact.email}`}>{contact.email}</a>
+            <a href={`tel:${contact.phoneHref}`}>{contact.phone}</a>
+            <span>{contact.city}</span>
+          </div>
+          <div>
+            <p>Projects</p>
+            {projects.map((project) => (
+              <a key={project.slug} href={project.liveUrl} target="_blank" rel="noopener noreferrer">{project.name}</a>
             ))}
           </div>
         </div>
-      </section>
-
-      <section id="contact" className="contact-sheet">
-        <div className="contact-index">05</div>
-        <div>
-          <h2>Have a role or project in mind?</h2>
-          <p>Email is the fastest way to reach me. I usually respond within 24 hours.</p>
+        <div className="footer-sign">
+          <p className="wordmark footer-wordmark" aria-hidden="true">Meet Mehta</p>
+          <p className="footer-legal">© 2026 Meet Mehta. Set in Hanken Grotesk.</p>
         </div>
-        <div className="contact-register">
-          <a href="mailto:mehtameet685@gmail.com"><Mail size={18} aria-hidden="true" /> mehtameet685@gmail.com <ArrowUpRight size={16} aria-hidden="true" /></a>
-          <button type="button" onClick={() => copyContact("+918320907038", "Phone number")}><Phone size={18} aria-hidden="true" /> +91 83209 07038 <Copy size={15} aria-hidden="true" /></button>
-          <a href="https://linkedin.com/in/meet-mehta685" target="_blank" rel="noopener noreferrer"><LinkedinIcon size={18} /> LinkedIn <ArrowUpRight size={16} aria-hidden="true" /></a>
-          <a href="https://github.com/meetmehta0685" target="_blank" rel="noopener noreferrer"><GithubIcon size={18} /> GitHub <ArrowUpRight size={16} aria-hidden="true" /></a>
-          <a href="/resume.pdf" download><FileText size={18} aria-hidden="true" /> Download résumé <ArrowDown size={16} aria-hidden="true" /></a>
-        </div>
-      </section>
-
-      <footer className="folio-footer">
-        <span>© 2026 Meet Mehta</span>
       </footer>
 
-      <ProjectDrawer project={selectedProject} onClose={() => setSelectedProject(null)} />
-    </main>
+      <RevealObserver />
+    </>
   );
 }

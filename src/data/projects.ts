@@ -1,17 +1,37 @@
+// Each project's colours come from its own live interface, so its chapter
+// on the portfolio reads as a continuation of the product.
+export interface ProjectTheme {
+  field: string;
+  ink: string;
+  soft: string;
+  accent: string;
+}
+
 export interface Project {
   slug: string;
-  title: string;
+  name: string;
+  kind: string;
   summary: string;
   keyAchievements: string[];
   technologies: string[];
   githubUrl?: string;
   liveUrl: string;
+  theme: ProjectTheme;
 }
+
+export const domainOf = (url: string) => new URL(url).host;
+
+export const shotsOf = (project: Project) => ({
+  desktop: `/work/${project.slug}-desktop.jpg`,
+  mobile: `/work/${project.slug}-mobile.jpg`,
+  loop: `/work/${project.slug}.webm`,
+});
 
 export const projects: Project[] = [
   {
     slug: "preproom",
-    title: "PrepRoom - AI Mock Interview Platform",
+    name: "PrepRoom",
+    kind: "AI mock interview platform",
     summary: "An adaptive mock-interview platform that builds five-question sessions around a candidate's resume, target role, interview track, experience level, prior answers, and submitted code.",
     keyAchievements: [
       "Integrated Groq-powered evaluation and Whisper transcription for tailored interview feedback.",
@@ -19,11 +39,13 @@ export const projects: Project[] = [
     ],
     technologies: ["Next.js", "TypeScript", "Groq", "LiveKit", "Prisma", "Neon", "Auth.js"],
     githubUrl: "https://github.com/meetmehta0685/PrepRoom",
-    liveUrl: "https://prepwithpeers.vercel.app"
+    liveUrl: "https://prepwithpeers.vercel.app",
+    theme: { field: "#dfe5fc", ink: "#10142a", soft: "#3d4566", accent: "#2243d6" }
   },
   {
     slug: "harvest-relay",
-    title: "Harvest Relay - Food Redistribution Platform",
+    name: "Harvest Relay",
+    kind: "Food redistribution platform",
     summary: "A role-based food-rescue workflow connecting donors, NGOs, and volunteers through matching, dispatch, and end-to-end delivery tracking.",
     keyAchievements: [
       "Engineered top-three nearest-NGO matching, a first-acceptance flow, and end-to-end delivery tracking.",
@@ -32,11 +54,13 @@ export const projects: Project[] = [
     ],
     technologies: ["Next.js", "Prisma", "Neon", "Auth.js", "MapLibre", "Ably"],
     githubUrl: "https://github.com/meetmehta0685/food-ngo",
-    liveUrl: "https://food-ngo-beta.vercel.app"
+    liveUrl: "https://food-ngo-beta.vercel.app",
+    theme: { field: "#2a130e", ink: "#f2f2f0", soft: "#d6bfb2", accent: "#ff6b5a" }
   },
   {
     slug: "ieltsprep-ai",
-    title: "IELTSPrep AI",
+    name: "IELTSPrep AI",
+    kind: "IELTS preparation platform",
     summary: "A full-stack IELTS preparation platform with authenticated speaking, writing, reading, and listening workflows, session history, and module analytics.",
     keyAchievements: [
       "Integrated streamed OpenRouter LLM evaluation for essays and speaking responses with grammar, vocabulary, band-score feedback, and a personalized study planner.",
@@ -45,11 +69,13 @@ export const projects: Project[] = [
     ],
     technologies: ["Next.js", "Express", "TypeScript", "Supabase", "OpenRouter", "Groq", "LiveKit"],
     githubUrl: "https://github.com/meetmehta0685/ielts-platform",
-    liveUrl: "https://ieltsprep-ai.vercel.app"
+    liveUrl: "https://ieltsprep-ai.vercel.app",
+    theme: { field: "#1b2559", ink: "#f3f3f1", soft: "#c3c8e0", accent: "#ffb547" }
   },
   {
     slug: "aurum-qms",
-    title: "AURUM QMS - Clinical Operations Platform",
+    name: "AURUM QMS",
+    kind: "Clinical operations platform",
     summary: "A role-aware clinical operations platform spanning appointments, real-time queues, records, diagnostics, prescriptions, and connected care workflows.",
     keyAchievements: [
       "Built workflows for patients, doctors, admins, laboratory technicians, and pharmacy staff.",
@@ -58,6 +84,7 @@ export const projects: Project[] = [
     ],
     technologies: ["Next.js", "TypeScript", "Supabase", "PostgreSQL", "shadcn/ui", "pdf-lib"],
     githubUrl: "https://github.com/meetmehta0685/AurumQMS",
-    liveUrl: "https://aurum-qms.vercel.app"
+    liveUrl: "https://aurum-qms.vercel.app",
+    theme: { field: "#c4ead9", ink: "#0d2219", soft: "#2f5144", accent: "#0f7a58" }
   }
 ];

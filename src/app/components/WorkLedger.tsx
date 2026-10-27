@@ -2,7 +2,8 @@
 
 import { useState, type CSSProperties } from "react";
 import Image from "next/image";
-import { domainOf, shotsOf, type Project } from "@/data/projects";
+import { addressOf, shotsOf, type Project } from "@/data/projects";
+import CodeSheet from "./CodeSheet";
 
 export default function WorkLedger({ projects }: { projects: Project[] }) {
   const [active, setActive] = useState(0);
@@ -21,7 +22,7 @@ export default function WorkLedger({ projects }: { projects: Project[] }) {
             >
               <span className="ledger-name">{project.name}</span>
               <span className="ledger-kind">{project.kind}</span>
-              <span className="ledger-domain">{domainOf(project.liveUrl)}</span>
+              <span className="ledger-domain">{addressOf(project)}</span>
             </a>
           </li>
         ))}
@@ -33,16 +34,20 @@ export default function WorkLedger({ projects }: { projects: Project[] }) {
             key={project.slug}
             className="ledger-frame"
             data-active={index === active}
-            style={{ "--field": project.theme.field } as CSSProperties}
+            style={{ "--field": project.theme.field, "--ink": project.theme.ink, "--soft": project.theme.soft } as CSSProperties}
           >
-            <Image
-              src={shotsOf(project).desktop}
-              alt=""
-              width={2880}
-              height={1800}
-              sizes="(max-width: 899px) 0px, 40vw"
-              loading={index === 0 ? "eager" : "lazy"}
-            />
+            {project.evidence === "live" ? (
+              <Image
+                src={shotsOf(project).desktop}
+                alt=""
+                width={2880}
+                height={1800}
+                sizes="(max-width: 899px) 0px, 40vw"
+                loading={index === 0 ? "eager" : "lazy"}
+              />
+            ) : (
+              <CodeSheet source={project.excerpt.source} className="ledger-code" />
+            )}
           </figure>
         ))}
       </div>

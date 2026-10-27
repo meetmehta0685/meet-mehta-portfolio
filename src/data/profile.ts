@@ -39,8 +39,8 @@ export const certifications = [
 ];
 
 export const skillGroups = [
-  { label: "Languages", skills: ["TypeScript", "JavaScript", "Python", "C"] },
+  { label: "Languages", skills: ["Go", "TypeScript", "JavaScript", "Python", "C"] },
   { label: "Frontend", skills: ["React", "Next.js", "Tailwind CSS", "HTML", "CSS"] },
-  { label: "Backend and data", skills: ["Node.js", "Express.js", "Hono", "FastAPI", "REST APIs", "PostgreSQL", "Supabase", "Neon", "Prisma", "MongoDB"] },
+  { label: "Backend and data", skills: ["Node.js", "Express.js", "Hono", "FastAPI", "REST APIs", "WebSockets", "PostgreSQL", "Supabase", "Neon", "Prisma", "MongoDB", "SQLite"] },
   { label: "AI, realtime and tools", skills: ["Groq", "OpenRouter", "Whisper", "LiveKit", "Ably", "AWS", "Docker", "Git", "GitHub", "Vercel"] },
 ];

@@ -1,6 +1,6 @@
 ---
 name: "Meet Mehta Portfolio"
-description: "Type and colour fields, with the four live products as the pictures."
+description: "Type and colour fields, with the live products and real source code as the pictures."
 colors:
   paper: "#f0f0ee"
   ink: "#101010"
@@ -33,19 +33,21 @@ spacing:
 
 ## Idea
 
-The first screen is the name and one sentence. The pictures are the work itself. Each of the four products has its own chapter, coloured with that product's own palette and showing its real desktop screen, phone screen, and a scroll loop of the live site. The page reads like a showreel of products that are running today.
+The first screen is the name and one sentence. The pictures are the work itself. Each project has its own chapter, coloured with that project's own palette. The four live products show their real desktop screen, phone screen, and a scroll loop of the live site. The two Go systems have no site to capture, so they show a verbatim excerpt of their public source, chosen to prove a claim in the chapter, with a link to the exact file.
+
+`evidence` in `src/data/projects.ts` decides which: `"live"` projects need captures in `public/work/`, `"code"` projects need an `excerpt` copied from the repository. Re-copy an excerpt when its source file changes.
 
 ## Colour
 
 Paper, ink, and one orange accent. The accent marks the primary action on hover, the second half of the staircase statement, the closing link in About, and the whole contact sheet. Nothing else is orange.
 
-Project chapters take their colours from `theme` in `src/data/projects.ts` (field, ink, soft, accent), matched to each live interface. Keep a tone step between a chapter's field and its screenshot's own background so the screen never dissolves into the field. Harvest Relay's field is darker than its site for that reason.
+Project chapters take their colours from `theme` in `src/data/projects.ts` (field, ink, soft, accent), matched to each project's own interface. ClipSync uses the ink blue and red of its own design doc. The reverse proxy has no interface, so it takes Go's cyan on a dark field. Keep a tone step between a chapter's field and its screenshot's own background so the screen never dissolves into the field. Harvest Relay's field is darker than its site for that reason.
 
 The four highlight tones in About are the only tints on the page.
 
 ## Type
 
-One family, Hanken Grotesk, in two weights. Five steps do the work: small, body, lead, statement, head. The hero name and the footer sign-off use a seventh, fitted size so "Meet Mehta" spans its container on one line at every width. The contact email is fitted the same way. Running text is full ink at 16px or more. Grey is for secondary notes.
+One family, Hanken Grotesk, in two weights. The only exception is real source code, set in the system monospace inside its code sheet. Five steps do the work: small, body, lead, statement, head. The hero name and the footer sign-off use a seventh, fitted size so "Meet Mehta" spans its container on one line at every width. The contact email is fitted the same way. Running text is full ink at 16px or more. Grey is for secondary notes.
 
 Headings stay within two lines at every width. Sentence case everywhere. No tracked uppercase labels, no monospace, no index numbers.
 
@@ -55,8 +57,8 @@ A 12-column grid inside equal outer margins. Neighbouring sections never share a
 
 - **Hero.** Corners carry the sentence and button, the navigation, the city and degree, and three links. The name runs across the middle. On phones the name moves up and the first product's phone screen fills the bottom, cropped by the screen edge.
 - **Statement.** A dark field with a stepped list of what goes wrong in operational work, answered by an orange heading. Two portraits fill the right quarter.
-- **Work.** A ledger of the four product names at heading size. Hovering or focusing a row dims the others and cross-fades its screen into the sticky preview frame.
-- **Chapters.** One per project, on its own field. Name, kind, and summary; desktop and phone screens (mirrored on alternate chapters); then achievements, stack, and links.
+- **Work.** A ledger of the six project names at heading size. Hovering or focusing a row dims the others and cross-fades its screen, or its code, into the sticky preview frame.
+- **Chapters.** One per project, on its own field. Name, kind, and summary; then either desktop and phone screens or a code sheet with a one-sentence caption (both mirrored on alternate chapters); then achievements, stack, and links. A code sheet sits on a 7% ink tone step of its field and bleeds to the screen edges on phones.
 - **About.** Two columns of large text with four highlighted facts and a highlighted closing link.
 - **Record.** Experience, education, and certifications as two-ended rows, with the stack in a second column.
 - **Contact.** An orange field with the email set as display type.

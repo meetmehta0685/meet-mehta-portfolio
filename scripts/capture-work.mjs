@@ -5,7 +5,7 @@ import { spawn, execFileSync } from "node:child_process";
 import { existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { homedir, tmpdir } from "node:os";
 import { join } from "node:path";
-import { projects } from "../src/data/projects.ts";
+import { liveProjects } from "../src/data/projects.ts";
 
 const OUT = join(import.meta.dirname, "..", "public", "work");
 const PLAYWRIGHT = join(homedir(), "Library", "Caches", "ms-playwright");
@@ -18,7 +18,7 @@ const FPS = 30;
 
 if (!existsSync(CHROME)) throw new Error(`No Chromium at ${CHROME}. Set CHROME_PATH.`);
 const wanted = process.argv.slice(2);
-const targets = projects.filter((p) => !wanted.length || wanted.includes(p.slug));
+const targets = liveProjects.filter((p) => !wanted.length || wanted.includes(p.slug));
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const chrome = spawn(CHROME, ["--headless=new", "--remote-debugging-port=9335", "--hide-scrollbars", "about:blank"], { stdio: "ignore" });

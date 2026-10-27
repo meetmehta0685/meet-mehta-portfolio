@@ -1,11 +1,12 @@
 import type { CSSProperties, ReactNode } from "react";
 import Image from "next/image";
 import Chevron from "./components/Chevron";
+import CodeSheet from "./components/CodeSheet";
 import CopyButton from "./components/CopyButton";
 import LoopVideo from "./components/LoopVideo";
 import RevealObserver from "./components/RevealObserver";
 import WorkLedger from "./components/WorkLedger";
-import { projects, shotsOf, domainOf, type Project } from "@/data/projects";
+import { addressOf, homeOf, liveProjects, projects, shotsOf, sourceFileOf, type CodeProject, type LiveProject, type Project } from "@/data/projects";
 import { certifications, contact, education, internship, resumes, skillGroups } from "@/data/profile";
 
 const frictions = ["Offers expire.", "Queues pile up.", "Handoffs go missing."];
@@ -30,8 +31,39 @@ function Highlight({ tone, children }: { tone: "blue" | "mint" | "sun" | "coral"
   return <mark data-tone={tone}>{children}</mark>;
 }
 
-function Chapter({ project, index }: { project: Project; index: number }) {
+function LiveEvidence({ project }: { project: LiveProject }) {
   const shots = shotsOf(project);
+  return (
+    <div className="chapter-shots">
+      <figure className="shot-desktop">
+        <Image src={shots.desktop} alt={`${project.name} landing page on desktop`} width={2880} height={1800} sizes="(max-width: 899px) 100vw, 66vw" />
+        <LoopVideo src={shots.loop} />
+      </figure>
+      <figure className="shot-mobile">
+        <Image src={shots.mobile} alt={`${project.name} landing page on a phone`} width={1170} height={2532} sizes="(max-width: 899px) 45vw, 22vw" />
+      </figure>
+    </div>
+  );
+}
+
+function CodeEvidence({ project }: { project: CodeProject }) {
+  return (
+    <div className="chapter-code t-stagger" data-reveal>
+      <figure className="code-figure t-stagger-line">
+        <CodeSheet source={project.excerpt.source} />
+        <figcaption>
+          <a href={sourceFileOf(project)} target="_blank" rel="noopener noreferrer" className="text-link t-learn">
+            {project.excerpt.path}
+            <Chevron />
+          </a>
+        </figcaption>
+      </figure>
+      <p className="code-caption t-stagger-line" style={line(1)}>{project.excerpt.caption}</p>
+    </div>
+  );
+}
+
+function Chapter({ project, index }: { project: Project; index: number }) {
   const theme = {
     "--field": project.theme.field,
     "--ink": project.theme.ink,
@@ -47,15 +79,7 @@ function Chapter({ project, index }: { project: Project; index: number }) {
         <p className="chapter-summary t-stagger-line" style={line(2)}>{project.summary}</p>
       </div>
 
-      <div className="chapter-shots">
-        <figure className="shot-desktop">
-          <Image src={shots.desktop} alt={`${project.name} landing page on desktop`} width={2880} height={1800} sizes="(max-width: 899px) 100vw, 66vw" />
-          <LoopVideo src={shots.loop} />
-        </figure>
-        <figure className="shot-mobile">
-          <Image src={shots.mobile} alt={`${project.name} landing page on a phone`} width={1170} height={2532} sizes="(max-width: 899px) 45vw, 22vw" />
-        </figure>
-      </div>
+      {project.evidence === "live" ? <LiveEvidence project={project} /> : <CodeEvidence project={project} />}
 
       <div className="chapter-body t-stagger" data-reveal>
         <ul className="chapter-achievements">
@@ -68,7 +92,7 @@ function Chapter({ project, index }: { project: Project; index: number }) {
           {project.technologies.join(", ")}
         </p>
         <p className="chapter-links t-stagger-line" style={line(2)}>
-          <TextLink href={project.liveUrl} external>Visit {domainOf(project.liveUrl)}</TextLink>
+          {project.evidence === "live" && <TextLink href={project.liveUrl} external>Visit {addressOf(project)}</TextLink>}
           {project.githubUrl && <TextLink href={project.githubUrl} external>Read the source</TextLink>}
         </p>
       </div>
@@ -113,7 +137,7 @@ export default function Home() {
           </p>
 
           <figure className="hero-phone">
-            <Image src={shotsOf(projects[0]).mobile} alt={`${projects[0].name} on a phone`} width={1170} height={2532} sizes="100vw" preload />
+            <Image src={shotsOf(liveProjects[0]).mobile} alt={`${liveProjects[0].name} on a phone`} width={1170} height={2532} sizes="100vw" preload />
           </figure>
         </header>
 
@@ -142,8 +166,8 @@ export default function Home() {
 
         <section id="work" className="work" aria-labelledby="work-heading">
           <div className="work-intro t-stagger" data-reveal>
-            <h2 id="work-heading" className="section-heading t-stagger-line">Four products, all live.</h2>
-            <p className="lead t-stagger-line" style={line(1)}>Each one handles a real workflow end to end, and each is running today. Pick one to read how it works.</p>
+            <h2 id="work-heading" className="section-heading t-stagger-line">Six projects, four of them live.</h2>
+            <p className="lead t-stagger-line" style={line(1)}>Four web products running today, and two Go systems with public source. Pick one to read how it works.</p>
           </div>
           <WorkLedger projects={projects} />
         </section>
@@ -160,7 +184,7 @@ export default function Home() {
             <p className="t-stagger-line">
               <strong>I&apos;m Meet.</strong> I study Computer Science and Engineering at <Highlight tone="blue">Adani University</Highlight> in Ahmedabad,
               specialising in <Highlight tone="mint">Artificial Intelligence and Machine Learning</Highlight>, from 2023 to 2027 with a CGPA of 7.48 out of 10.
-              I build full-stack products around real operational work: food redistribution, interview preparation, IELTS practice, and clinical operations.
+              I build full-stack products around real operational work: food redistribution, interview preparation, IELTS practice, and clinical operations. I also build smaller systems in Go, like a reverse proxy and an encrypted clipboard sync tool.
             </p>
             <p className="t-stagger-line" style={line(1)}>
               From May to July 2026 I was a <Highlight tone="sun">Full Stack Developer Intern at Appendo</Highlight> in Vadodara, where I built a placement portal
@@ -276,7 +300,7 @@ export default function Home() {
           <div>
             <p>Projects</p>
             {projects.map((project) => (
-              <a key={project.slug} href={project.liveUrl} target="_blank" rel="noopener noreferrer">{project.name}</a>
+              <a key={project.slug} href={homeOf(project)} target="_blank" rel="noopener noreferrer">{project.name}</a>
             ))}
           </div>
         </div>

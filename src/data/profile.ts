@@ -5,8 +5,12 @@ export const contact = {
   city: "Ahmedabad, India",
   github: "https://github.com/meetmehta0685",
   linkedin: "https://linkedin.com/in/meet-mehta685",
-  resume: "/resume.pdf",
 };
+
+export const resumes = [
+  { label: "Full-stack résumé", href: "/resume/meet-mehta-full-stack.pdf", file: "Meet_Mehta_FullStack.pdf" },
+  { label: "SDE résumé", href: "/resume/meet-mehta-sde.pdf", file: "Meet_Mehta_SDE.pdf" },
+];
 
 export const education = {
   degree: "B.Tech CSE, AI & ML",

@@ -6,13 +6,13 @@ import LoopVideo from "./components/LoopVideo";
 import RevealObserver from "./components/RevealObserver";
 import WorkLedger from "./components/WorkLedger";
 import { projects, shotsOf, domainOf, type Project } from "@/data/projects";
-import { certifications, contact, education, internship, skillGroups } from "@/data/profile";
+import { certifications, contact, education, internship, resumes, skillGroups } from "@/data/profile";
 
 const frictions = ["Offers expire.", "Queues pile up.", "Handoffs go missing."];
 
 const line = (i: number) => ({ "--i": i }) as CSSProperties;
 
-function TextLink({ href, children, download, external }: { href: string; children: ReactNode; download?: boolean; external?: boolean }) {
+function TextLink({ href, children, download, external }: { href: string; children: ReactNode; download?: string; external?: boolean }) {
   return (
     <a
       href={href}
@@ -107,7 +107,9 @@ export default function Home() {
           <p className="hero-links">
             <TextLink href={contact.github} external>GitHub</TextLink>
             <TextLink href={contact.linkedin} external>LinkedIn</TextLink>
-            <TextLink href={contact.resume} download>Résumé</TextLink>
+            {resumes.map((resume) => (
+              <TextLink key={resume.href} href={resume.href} download={resume.file}>{resume.label}</TextLink>
+            ))}
           </p>
 
           <figure className="hero-phone">
@@ -240,7 +242,9 @@ export default function Home() {
             <p className="contact-links">
               <TextLink href={contact.linkedin} external>LinkedIn</TextLink>
               <TextLink href={contact.github} external>GitHub</TextLink>
-              <TextLink href={contact.resume} download>Download résumé</TextLink>
+              {resumes.map((resume) => (
+                <TextLink key={resume.href} href={resume.href} download={resume.file}>{resume.label}</TextLink>
+              ))}
             </p>
           </div>
         </section>
@@ -259,7 +263,9 @@ export default function Home() {
             <p>Elsewhere</p>
             <a href={contact.github} target="_blank" rel="noopener noreferrer">GitHub</a>
             <a href={contact.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a>
-            <a href={contact.resume} download>Résumé</a>
+            {resumes.map((resume) => (
+              <a key={resume.href} href={resume.href} download={resume.file}>{resume.label}</a>
+            ))}
           </div>
           <div>
             <p>Contact</p>

@@ -45,3 +45,6 @@ next-env.d.ts
 .impeccable/
 skills-lock.json
 .firecrawl/
+
+# design inspection output
+.taste-skill/

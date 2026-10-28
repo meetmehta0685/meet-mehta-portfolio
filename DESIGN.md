@@ -1,70 +1,88 @@
 ---
 name: "Meet Mehta Portfolio"
-description: "A shelf of working software. Every tile is a real screen, real source, or a real fact."
+description: "Type and colour fields, with the live products and real source code as the pictures."
 colors:
-  canvas: "#fbfbfa"
-  tile: "#f1f1ef"
-  card: "#ffffff"
-  ink: "#0e0e0d"
-  soft: "#6a6863"
-  accent: "#2d5bff"
-  night: "#0e0e0d"
+  paper: "#f0f0ee"
+  ink: "#101010"
+  soft: "#57544e"
+  accent: "#ff5b14"
+  night: "#121212"
+  night-ink: "#f1f1ef"
+  night-soft: "#a9a59d"
+  tone-blue: "#c9d4ff"
+  tone-mint: "#bfe8d4"
+  tone-sun: "#ffd977"
+  tone-coral: "#ffc3ae"
 typography:
-  family: "Geist 400 to 600; Geist Mono only inside real source code"
+  family: "Hanken Grotesk 400 and 500, Helvetica Neue and Arial fallbacks"
   small: "0.875rem"
-  body: "1rem, leading 1.5"
-  lead: "clamp(1.125rem, 1rem + 0.35vw, 1.3125rem)"
-  head: "clamp(2.25rem, 1.6rem + 2.2vw, 3.5rem), weight 550, leading 1, tracking -0.045em"
-  wordmark: "fitted to the footer with cqi, weight 600"
+  body: "clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem), leading 1.5"
+  lead: "clamp(1.25rem, 1.05rem + 0.75vw, 1.75rem), leading 1.3"
+  statement: "clamp(2rem, 1rem + 3.6vw, 4.25rem), leading 1.04"
+  head: "clamp(2.5rem, 1.2rem + 4.2vw, 5.5rem), weight 500, leading 0.95, tracking -0.045em"
+  wordmark: "fitted to its container with cqi, weight 500, tracking -0.06em"
 rounded:
-  card: "20px"
-  stage: "14px"
-  controls: "999px"
+  all: "0"
 spacing:
-  margin: "clamp(16px, 2vw, 28px)"
-  gap: "clamp(10px, 1vw, 14px)"
+  margin: "clamp(16px, 2.2vw, 32px)"
+  gutter: "clamp(16px, 1.8vw, 28px)"
+  section-gap: "clamp(96px, 12vw, 200px)"
 ---
 
 # Design system
 
 ## Idea
 
-The page is a curated shelf, after the way vibrant.design presents crafted work. It opens on the work, not on a name. The introduction is the first tile of a masonry of tiles. Each tile is a live product's desktop screen with its scroll loop, its phone screen, a verbatim excerpt of Go source, a portrait, or one fact from the record. Opening a project tile shows the full story in a sheet.
+The first screen is the name and one sentence. The pictures are the work itself. Each project has its own chapter, coloured with that project's own palette. The four live products show their real desktop screen, phone screen, and a scroll loop of the live site. The two Go systems have no site to capture, so they show a verbatim excerpt of their public source, chosen to prove a claim in the chapter, with a link to the exact file.
 
-`src/data/gallery.ts` is the shelf. A `Tile` is a discriminated union (`screen`, `code`, `portrait`, `fact`), and each tile names its `shelf` (`products`, `systems`, `me`). The filter in the top bar reads `shelf` and nothing else. Reorder or add tiles there. Project facts stay in `src/data/projects.ts` and profile facts in `src/data/profile.ts`.
-
-## Layout
-
-- **Top bar.** A floating white pill. The name sits on the left, the shelf filter in the middle, and Record, Contact and a Résumé menu on the right. On phones only the filter and Résumé remain.
-- **Shelf.** `Showcase` deals tiles into 4, 3, 2 or 1 columns, shortest column first, in list order. Each tile kind has an estimated height in `heightOf`, so the columns stay level and the first row always reads left to right. The intro leads the first column from three columns up and sits above the shelf on narrower screens.
-- **Tiles.** A white card with a 6px inset and a 1px hairline. Inside it sits a stage on the project's own field colour (`theme` in `projects.ts`), then a caption with a lettered mark, the name and the kind.
-- **Project sheet.** A native `<dialog>`. Its top is the project's field with the screens or the code, and below it the summary, links, what was built and the stack. Arrow keys and the buttons step through projects. The URL hash follows the open project, so `/#harvest-relay` deep-links to it.
-- **About and record.** About text stays sticky on the left. On the right a single white panel holds experience, education, certifications and stack.
-- **Contact.** One accent-blue card with the email set as display type and copy buttons.
-- **Footer.** Dark, four short columns, and the name at full width.
+`evidence` in `src/data/projects.ts` decides which: `"live"` projects need captures in `public/work/`, `"code"` projects need an `excerpt` copied from the repository. Re-copy an excerpt when its source file changes.
 
 ## Colour
 
-The canvas is near white and the tiles are one step greyer. Ink is near black. A single blue accent marks the primary action, the Résumé button, inline links and the contact card. Project colour appears only inside stages and the project sheet.
+Paper, ink, and one orange accent. The accent marks the primary action on hover, the second half of the staircase statement, the closing link in About, and the whole contact sheet. Nothing else is orange.
+
+Project chapters take their colours from `theme` in `src/data/projects.ts` (field, ink, soft, accent), matched to each project's own interface. ClipSync uses the ink blue and red of its own design doc. The reverse proxy has no interface, so it takes Go's cyan on a dark field. Keep a tone step between a chapter's field and its screenshot's own background so the screen never dissolves into the field. Harvest Relay's field is darker than its site for that reason.
+
+The four highlight tones in About are the only tints on the page.
+
+## Type
+
+One family, Hanken Grotesk, in two weights. The only exception is real source code, set in the system monospace inside its code sheet. Five steps do the work: small, body, lead, statement, head. The hero name and the footer sign-off use a seventh, fitted size so "Meet Mehta" spans its container on one line at every width. The contact email is fitted the same way. Running text is full ink at 16px or more. Grey is for secondary notes.
+
+Headings stay within two lines at every width. Sentence case everywhere. No tracked uppercase labels, no monospace, no index numbers.
+
+## Layout
+
+A 12-column grid inside equal outer margins. Neighbouring sections never share a composition:
+
+- **Hero.** Corners carry the sentence and button, the navigation, the city and degree, and three links. The name runs across the middle. On phones the name moves up and the first product's phone screen fills the bottom, cropped by the screen edge.
+- **Statement.** A dark field with a stepped list of what goes wrong in operational work, answered by an orange heading. Two portraits fill the right quarter.
+- **Work.** A ledger of the six project names at heading size. Hovering or focusing a row dims the others and cross-fades its screen, or its code, into the sticky preview frame.
+- **Chapters.** One per project, on its own field. Name, kind, and summary; then either desktop and phone screens or a code sheet with a one-sentence caption (both mirrored on alternate chapters); then achievements, stack, and links. A code sheet sits on a 7% ink tone step of its field and bleeds to the screen edges on phones.
+- **About.** Two columns of large text with four highlighted facts and a highlighted closing link.
+- **Record.** Experience, education, and certifications as two-ended rows, with the stack in a second column.
+- **Contact.** An orange field with the email set as display type.
+- **Footer.** A dark close with four short columns and the name at full width.
+
+No rules, no cards, no shadows, no gradients, no rounded corners. Surfaces separate by a change of field colour.
 
 ## Motion
 
-Tokens and recipes come from transitions.dev and live at the top of `globals.css`. Every one has a `prefers-reduced-motion` fallback.
+Motion tokens and recipes come from transitions.dev and live at the top of `globals.css`.
 
-- **Texts reveal.** The intro rises line by line on load. Lower sections reveal as they enter (`html.js` gates the hidden state).
-- **Tiles.** They rise in staggered on load. On hover a tile lifts 3px, its screen zooms 3% and a phone screen slides up. A press scales it to 0.985.
-- **Filter.** The sliding-tabs pill moves between options, and the shelf reflows inside a View Transition so tiles glide to their new columns.
-- **Sheet.** The modal recipe runs through `@starting-style` on `dialog[open]`, opening in 250ms and closing in 150ms. Content cross-fades when you step between projects.
-- **Menu.** The Résumé dropdown grows from its trigger's top right.
-- **Text morph.** "Copy email" morphs to "Copied".
-- **Footer.** The name rises into place as it scrolls in.
+- **Texts reveal.** Every section's parts rise 12px out of a 3px blur as they enter, staggered 80ms per line and capped at three steps. The hidden state only applies once script has run (`html.js`), so the page reads in full without JavaScript. The first screen uses a CSS-only version so the title paints immediately.
+- **Signature move.** The hero name recedes (scale 0.93, fading) as the first screen scrolls away. The footer name grows into place as it arrives. Both use scroll-driven animations with a static fallback.
+- **Moving pictures.** Each chapter's desktop screen carries a muted loop that plays only while on screen and cross-fades in over its screenshot once playing. Phone screens drift 8% against the scroll.
+- **Feedback.** Learn-more chevrons spread on hover. The ledger preview cross-fades with blur. The phone number's Copy button morphs to "Copied" through the text-morph recipe. Buttons press to 0.98.
+
+Every move has a `prefers-reduced-motion` fallback that keeps the content and drops the travel. Loops do not autoplay under reduced motion.
 
 ## Assets
 
-`public/work/` holds each live project's `-desktop.jpg`, `-mobile.jpg` and `.webm` loop. Regenerate them from the live sites with:
+`public/work/` holds each project's `-desktop.jpg` (2880×1800), `-mobile.jpg` (1170×2532), and `.webm` loop. Regenerate them from the live sites with:
 
 ```bash
 node scripts/capture-work.mjs
 ```
 
-Portraits live in `public/me/`, résumés in `public/resume/`.
+Pass slugs to refresh only some projects. Portraits live in `public/me/`.

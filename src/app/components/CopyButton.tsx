@@ -41,7 +41,7 @@ function morphText(el: HTMLElement & { morphTimer?: number }, next: string) {
   }, Math.max(ms("--text-morph-dur"), ms("--text-morph-resize-dur")) + 40);
 }
 
-export default function CopyButton({ value, label }: { value: string; label: string }) {
+export default function CopyButton({ value, label, idle = "Copy", className = "copy-button" }: { value: string; label: string; idle?: string; className?: string }) {
   const text = useRef<HTMLSpanElement>(null);
   const reset = useRef<number>(undefined);
 
@@ -54,12 +54,12 @@ export default function CopyButton({ value, label }: { value: string; label: str
     if (!text.current) return;
     morphText(text.current, "Copied");
     window.clearTimeout(reset.current);
-    reset.current = window.setTimeout(() => text.current && morphText(text.current, "Copy"), 2000);
+    reset.current = window.setTimeout(() => text.current && morphText(text.current, idle), 2000);
   };
 
   return (
-    <button type="button" className="copy-button" onClick={copy} aria-label={`Copy ${label}`}>
-      <span ref={text} className="t-morph" aria-live="polite">Copy</span>
+    <button type="button" className={className} onClick={copy} aria-label={`Copy ${label}`}>
+      <span ref={text} className="t-morph" aria-live="polite">{idle}</span>
     </button>
   );
 }

@@ -26,7 +26,7 @@ Visitors are likely scanning the site during candidate review on desktop or mobi
 
 - Preserve all verified biography, education, project, credential, contact, and destination-link facts from the existing implementation.
 - The site is a responsive Next.js web application.
-- Project detail lives in per-project chapters on the page. Contact copy and in-page navigation must keep working.
+- Project detail lives in a sheet opened from the shelf, deep-linkable by `#slug`. Contact copy and in-page navigation must keep working.
 - Factual claims must not be invented.
 
 ## Brand Commitments

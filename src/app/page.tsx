@@ -1,206 +1,67 @@
 import type { CSSProperties, ReactNode } from "react";
 import Image from "next/image";
 import Chevron from "./components/Chevron";
-import CodeSheet from "./components/CodeSheet";
 import CopyButton from "./components/CopyButton";
-import LoopVideo from "./components/LoopVideo";
 import RevealObserver from "./components/RevealObserver";
-import WorkLedger from "./components/WorkLedger";
-import { addressOf, homeOf, liveProjects, projects, shotsOf, sourceFileOf, type CodeProject, type LiveProject, type Project } from "@/data/projects";
+import Showcase from "./components/Showcase";
+import { homeOf, projects } from "@/data/projects";
 import { certifications, contact, education, internship, resumes, skillGroups } from "@/data/profile";
-
-const frictions = ["Offers expire.", "Queues pile up.", "Handoffs go missing."];
 
 const line = (i: number) => ({ "--i": i }) as CSSProperties;
 
 function TextLink({ href, children, download, external }: { href: string; children: ReactNode; download?: string; external?: boolean }) {
   return (
-    <a
-      href={href}
-      className="text-link t-learn"
-      download={download}
-      {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-    >
+    <a href={href} className="text-link t-learn" download={download} {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}>
       {children}
       <Chevron />
     </a>
   );
 }
 
-function Highlight({ tone, children }: { tone: "blue" | "mint" | "sun" | "coral"; children: ReactNode }) {
-  return <mark data-tone={tone}>{children}</mark>;
-}
-
-function LiveEvidence({ project }: { project: LiveProject }) {
-  const shots = shotsOf(project);
+function Intro() {
   return (
-    <div className="chapter-shots">
-      <figure className="shot-desktop">
-        <Image src={shots.desktop} alt={`${project.name} landing page on desktop`} width={2880} height={1800} sizes="(max-width: 899px) 100vw, 66vw" />
-        <LoopVideo src={shots.loop} />
-      </figure>
-      <figure className="shot-mobile">
-        <Image src={shots.mobile} alt={`${project.name} landing page on a phone`} width={1170} height={2532} sizes="(max-width: 899px) 45vw, 22vw" />
-      </figure>
+    <div className="intro t-stagger t-load">
+      <p className="intro-byline t-stagger-line">
+        <Image src="/me/booth.jpg" alt="" width={1800} height={2400} sizes="40px" className="intro-avatar" preload />
+        <span>
+          <strong>Meet Mehta</strong>
+          <span>Full-stack developer, {contact.city}</span>
+        </span>
+      </p>
+      <h1 className="t-stagger-line" style={line(1)}>Software for work that has to move.</h1>
+      <p className="intro-lead t-stagger-line" style={line(2)}>
+        Four live products and two Go systems, built end to end. Open any tile to see how it works.
+      </p>
+      <p className="intro-actions t-stagger-line" style={line(3)}>
+        <a href={`mailto:${contact.email}`} className="button button-accent">Email me</a>
+        <CopyButton value={contact.email} label="email address" idle="Copy email" className="button button-quiet" />
+      </p>
     </div>
-  );
-}
-
-function CodeEvidence({ project }: { project: CodeProject }) {
-  return (
-    <div className="chapter-code t-stagger" data-reveal>
-      <figure className="code-figure t-stagger-line">
-        <CodeSheet source={project.excerpt.source} />
-        <figcaption>
-          <a href={sourceFileOf(project)} target="_blank" rel="noopener noreferrer" className="text-link t-learn">
-            {project.excerpt.path}
-            <Chevron />
-          </a>
-        </figcaption>
-      </figure>
-      <p className="code-caption t-stagger-line" style={line(1)}>{project.excerpt.caption}</p>
-    </div>
-  );
-}
-
-function Chapter({ project, index }: { project: Project; index: number }) {
-  const theme = {
-    "--field": project.theme.field,
-    "--ink": project.theme.ink,
-    "--soft": project.theme.soft,
-    "--accent": project.theme.accent,
-  } as CSSProperties;
-
-  return (
-    <article id={project.slug} className="chapter" data-flip={index % 2 === 1} style={theme} aria-labelledby={`${project.slug}-name`}>
-      <div className="chapter-head t-stagger" data-reveal>
-        <h3 id={`${project.slug}-name`} className="t-stagger-line" style={line(0)}>{project.name}</h3>
-        <p className="chapter-kind t-stagger-line" style={line(1)}>{project.kind}</p>
-        <p className="chapter-summary t-stagger-line" style={line(2)}>{project.summary}</p>
-      </div>
-
-      {project.evidence === "live" ? <LiveEvidence project={project} /> : <CodeEvidence project={project} />}
-
-      <div className="chapter-body t-stagger" data-reveal>
-        <ul className="chapter-achievements">
-          {project.keyAchievements.map((achievement, i) => (
-            <li key={achievement} className="t-stagger-line" style={line(i)}>{achievement}</li>
-          ))}
-        </ul>
-        <p className="chapter-stack t-stagger-line" style={line(1)}>
-          <span className="visually-hidden">Built with </span>
-          {project.technologies.join(", ")}
-        </p>
-        <p className="chapter-links t-stagger-line" style={line(2)}>
-          {project.evidence === "live" && <TextLink href={project.liveUrl} external>Visit {addressOf(project)}</TextLink>}
-          {project.githubUrl && <TextLink href={project.githubUrl} external>Read the source</TextLink>}
-        </p>
-      </div>
-    </article>
   );
 }
 
 export default function Home() {
   return (
     <>
-      <main>
-        <header className="hero">
-          <div className="hero-intro t-stagger t-load">
-            <p className="hero-sentence t-stagger-line" style={line(1)}>
-              Full-stack developer. I build software for work that has to move.
-            </p>
-            <a href="#work" className="button t-stagger-line" style={line(2)}>See the work</a>
-          </div>
-
-          <nav className="hero-nav" aria-label="Primary">
-            <a href="#work">Work</a>
-            <a href="#about">About</a>
-            <a href="#record">Record</a>
-            <a href="#contact">Contact</a>
-          </nav>
-
-          <div className="hero-name">
-            <h1 className="wordmark t-load-name">Meet Mehta</h1>
-          </div>
-
-          <p className="hero-place">
-            {contact.city}
-            <span>{education.degree}, {education.school}</span>
-          </p>
-
-          <p className="hero-links">
-            <TextLink href={contact.github} external>GitHub</TextLink>
-            <TextLink href={contact.linkedin} external>LinkedIn</TextLink>
-            {resumes.map((resume) => (
-              <TextLink key={resume.href} href={resume.href} download={resume.file}>{resume.label}</TextLink>
-            ))}
-          </p>
-
-          <figure className="hero-phone">
-            <Image src={shotsOf(liveProjects[0]).mobile} alt={`${liveProjects[0].name} on a phone`} width={1170} height={2532} sizes="100vw" preload />
-          </figure>
-        </header>
-
-        <section className="statement" aria-labelledby="statement-heading">
-          <div className="staircase t-stagger" data-reveal>
-            <ul aria-label="What goes wrong in operational work">
-              {frictions.map((text, i) => (
-                <li key={text} className="t-stagger-line" style={line(i)}>{text}</li>
-              ))}
-            </ul>
-            <h2 id="statement-heading">
-              <span className="t-stagger-line" style={line(3)}>I build the software</span>
-              <span className="t-stagger-line" style={line(4)}>that keeps work moving.</span>
-            </h2>
-          </div>
-          <div className="statement-photos">
-            <figure>
-              <Image src="/me/booth.jpg" alt="Meet Mehta smiling in a restaurant booth" width={1800} height={2400} sizes="(max-width: 899px) 50vw, 18vw" />
-            </figure>
-            <figure>
-              <Image src="/me/evening.jpg" alt="Meet Mehta outdoors in the evening, in a white shirt" width={768} height={1024} sizes="(max-width: 899px) 50vw, 18vw" />
-            </figure>
-          </div>
-          <p className="statement-note">Operational workflows are complex. I build software that makes them reliable, observable, and efficient.</p>
-        </section>
-
-        <section id="work" className="work" aria-labelledby="work-heading">
-          <div className="work-intro t-stagger" data-reveal>
-            <h2 id="work-heading" className="section-heading t-stagger-line">Six projects, four of them live.</h2>
-            <p className="lead t-stagger-line" style={line(1)}>Four web products running today, and two Go systems with public source. Pick one to read how it works.</p>
-          </div>
-          <WorkLedger projects={projects} />
-        </section>
-
-        {projects.map((project, index) => (
-          <Chapter key={project.slug} project={project} index={index} />
-        ))}
-
-        <section id="about" className="about" aria-labelledby="about-heading">
-          <h2 id="about-heading" className="section-heading t-stagger" data-reveal>
-            <span className="t-stagger-line">About</span>
-          </h2>
-          <div className="about-columns t-stagger" data-reveal>
-            <p className="t-stagger-line">
-              <strong>I&apos;m Meet.</strong> I study Computer Science and Engineering at <Highlight tone="blue">Adani University</Highlight> in Ahmedabad,
-              specialising in <Highlight tone="mint">Artificial Intelligence and Machine Learning</Highlight>, from 2023 to 2027 with a CGPA of 7.48 out of 10.
-              I build full-stack products around real operational work: food redistribution, interview preparation, IELTS practice, and clinical operations. I also build smaller systems in Go, like a reverse proxy and an encrypted clipboard sync tool.
-            </p>
-            <p className="t-stagger-line" style={line(1)}>
-              From May to July 2026 I was a <Highlight tone="sun">Full Stack Developer Intern at Appendo</Highlight> in Vadodara, where I built a placement portal
-              for SVIT with Hono, Supabase, and Prisma, and shared product feedback with the Tyroo.ai team. I also hold three <Highlight tone="coral">AWS Academy</Highlight>{" "}credentials.
-              Right now I&apos;m strengthening my full-stack foundations and deciding what to build next.
-            </p>
-            <p className="about-close t-stagger-line" style={line(2)}>
-              <a href="#contact">If you have a role in mind, write to me.</a>
-            </p>
-          </div>
-        </section>
+      <main id="top">
+        <Showcase intro={<Intro />} />
 
         <section id="record" className="record" aria-labelledby="record-heading">
-          <h2 id="record-heading" className="section-heading">Experience and credentials</h2>
+          <div className="record-about t-stagger" data-reveal>
+            <h2 id="record-heading" className="section-heading t-stagger-line">About and record</h2>
+            <p className="t-stagger-line" style={line(1)}>
+              I&apos;m Meet. I study Computer Science and Engineering at Adani University in Ahmedabad, specialising in Artificial
+              Intelligence and Machine Learning. I build full-stack products around real operational work: food redistribution,
+              interview preparation, IELTS practice, and clinical operations. I also build smaller systems in Go, like a reverse
+              proxy and an encrypted clipboard sync tool.
+            </p>
+            <p className="t-stagger-line" style={line(2)}>
+              Right now I&apos;m strengthening my full-stack foundations and deciding what to build next.{" "}
+              <a href="#contact" className="inline-link">If you have a role in mind, write to me.</a>
+            </p>
+          </div>
 
-          <div className="record-main">
+          <div className="record-panel">
             <div className="record-group t-stagger" data-reveal>
               <h3 className="t-stagger-line">Experience</h3>
               <div className="record-row t-stagger-line" style={line(1)}>
@@ -235,40 +96,30 @@ export default function Home() {
                 </a>
               ))}
             </div>
-          </div>
 
-          <div className="record-stack t-stagger" data-reveal>
-            <h3 className="t-stagger-line">Stack</h3>
-            {skillGroups.map((group, i) => (
-              <div key={group.label} className="stack-group t-stagger-line" style={line(i + 1)}>
-                <h4>{group.label}</h4>
-                <p>{group.skills.join(", ")}</p>
-              </div>
-            ))}
+            <div className="record-group t-stagger" data-reveal>
+              <h3 className="t-stagger-line">Stack</h3>
+              {skillGroups.map((group, i) => (
+                <div key={group.label} className="stack-group t-stagger-line" style={line(i + 1)}>
+                  <h4>{group.label}</h4>
+                  <ul className="chips">
+                    {group.skills.map((skill) => <li key={skill}>{skill}</li>)}
+                  </ul>
+                </div>
+              ))}
+            </div>
           </div>
         </section>
 
         <section id="contact" className="contact" aria-labelledby="contact-heading">
-          <div className="contact-top">
+          <div className="contact-card t-stagger" data-reveal>
             <h2 id="contact-heading" className="t-stagger-line">Have a role or project in mind?</h2>
             <p className="t-stagger-line" style={line(1)}>Email is the fastest way to reach me. I usually respond within 24 hours.</p>
-          </div>
-
-          <a href={`mailto:${contact.email}`} className="contact-email">
-            <span>mehtameet685@</span><span>gmail.com</span>
-          </a>
-
-          <div className="contact-foot">
-            <p className="contact-phone">
-              <a href={`tel:${contact.phoneHref}`}>{contact.phone}</a>
-              <CopyButton value={contact.phoneHref} label="phone number" />
-            </p>
-            <p className="contact-links">
-              <TextLink href={contact.linkedin} external>LinkedIn</TextLink>
-              <TextLink href={contact.github} external>GitHub</TextLink>
-              {resumes.map((resume) => (
-                <TextLink key={resume.href} href={resume.href} download={resume.file}>{resume.label}</TextLink>
-              ))}
+            <a href={`mailto:${contact.email}`} className="contact-email t-stagger-line" style={line(2)}>{contact.email}</a>
+            <p className="contact-actions t-stagger-line" style={line(3)}>
+              <CopyButton value={contact.email} label="email address" idle="Copy email" className="button button-light" />
+              <a href={`tel:${contact.phoneHref}`} className="button button-outline">{contact.phone}</a>
+              <CopyButton value={contact.phoneHref} label="phone number" idle="Copy number" className="button button-outline" />
             </p>
           </div>
         </section>
@@ -277,18 +128,20 @@ export default function Home() {
       <footer className="footer">
         <div className="footer-columns">
           <div>
-            <p>Pages</p>
-            <a href="#work">Work</a>
-            <a href="#about">About</a>
-            <a href="#record">Record</a>
-            <a href="#contact">Contact</a>
+            <p>Elsewhere</p>
+            <TextLink href={contact.github} external>GitHub</TextLink>
+            <TextLink href={contact.linkedin} external>LinkedIn</TextLink>
           </div>
           <div>
-            <p>Elsewhere</p>
-            <a href={contact.github} target="_blank" rel="noopener noreferrer">GitHub</a>
-            <a href={contact.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a>
+            <p>Résumés</p>
             {resumes.map((resume) => (
-              <a key={resume.href} href={resume.href} download={resume.file}>{resume.label}</a>
+              <TextLink key={resume.href} href={resume.href} download={resume.file}>{resume.label}</TextLink>
+            ))}
+          </div>
+          <div>
+            <p>Projects</p>
+            {projects.map((project) => (
+              <a key={project.slug} href={homeOf(project)} target="_blank" rel="noopener noreferrer">{project.name}</a>
             ))}
           </div>
           <div>
@@ -297,17 +150,9 @@ export default function Home() {
             <a href={`tel:${contact.phoneHref}`}>{contact.phone}</a>
             <span>{contact.city}</span>
           </div>
-          <div>
-            <p>Projects</p>
-            {projects.map((project) => (
-              <a key={project.slug} href={homeOf(project)} target="_blank" rel="noopener noreferrer">{project.name}</a>
-            ))}
-          </div>
         </div>
-        <div className="footer-sign">
-          <p className="wordmark footer-wordmark" aria-hidden="true">Meet Mehta</p>
-          <p className="footer-legal">© 2026 Meet Mehta. Set in Hanken Grotesk.</p>
-        </div>
+        <p className="wordmark footer-wordmark" aria-hidden="true">Meet Mehta</p>
+        <p className="footer-legal">© 2026 Meet Mehta. Set in Geist.</p>
       </footer>
 
       <RevealObserver />

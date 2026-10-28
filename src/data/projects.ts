@@ -83,19 +83,19 @@ export const projects: Project[] = [
   },
   {
     slug: "ieltsprep-ai",
-    name: "IELTSPrep AI",
+    name: "IELTS Prep",
     kind: "IELTS preparation platform",
-    summary: "A full-stack IELTS preparation platform with authenticated speaking, writing, reading, and listening workflows, session history, and module analytics.",
+    summary: "Timed practice for all four IELTS papers and a full mock exam, with every answer marked by AI against the official band descriptors, a mentor chat, a study planner, and a live voice examiner.",
     keyAchievements: [
-      "Integrated streamed OpenRouter LLM evaluation for essays and speaking responses with grammar, vocabulary, band-score feedback, and a personalized study planner.",
-      "Built a real-time voice examiner using LiveKit and Groq Whisper transcription.",
-      "Persisted submissions, session history, and analytics in Supabase."
+      "Built timed Listening, Reading, Writing, and Speaking practice and a full mock exam that ends in a consolidated Test Report Form, with official band conversion and saved attempt history.",
+      "Routed marking, mentor chat, and study plans through a provider chain of three Groq models and then OpenRouter under one deadline, streaming results over Server-Sent Events, and filtered Whisper silence hallucinations out of spoken answers.",
+      "Ran the three-part speaking interview as a LiveKit Agents worker, and scoped every learner's data with Supabase Auth, Google sign-in, and Row Level Security."
     ],
-    technologies: ["Next.js", "Express", "TypeScript", "Supabase", "OpenRouter", "Groq", "LiveKit"],
+    technologies: ["Next.js", "Express", "TypeScript", "Supabase", "Groq", "OpenRouter", "LiveKit"],
     githubUrl: "https://github.com/meetmehta0685/ielts-platform",
     evidence: "live",
     liveUrl: "https://ieltsprep-ai.vercel.app",
-    theme: { field: "#1b2559", ink: "#f3f3f1", soft: "#c3c8e0", accent: "#ffb547" }
+    theme: { field: "#f3f3f5", ink: "#0c0c12", soft: "#62626d", accent: "#3452ff" }
   },
   {
     slug: "aurum-qms",

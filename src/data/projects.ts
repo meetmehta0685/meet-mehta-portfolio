@@ -100,18 +100,18 @@ export const projects: Project[] = [
   {
     slug: "aurum-qms",
     name: "AURUM QMS",
-    kind: "Clinical operations platform",
-    summary: "A role-aware clinical operations platform spanning appointments, real-time queues, records, diagnostics, prescriptions, and connected care workflows.",
+    kind: "Clinical and hospitality operations platform",
+    summary: "One operational rail for care and stay: appointments, live queues, diagnostics, pharmacy, rooms, and guest service in a role-aware workspace where every role sees its next action and every status reads the same way.",
     keyAchievements: [
-      "Built workflows for patients, doctors, admins, laboratory technicians, and pharmacy staff.",
-      "Connected laboratory orders and reports, pharmacy fulfillment, and discharge workflows, including authenticated downloadable PDFs combining diagnosis, notes, lab reports, medicines, and status.",
-      "Implemented shared Supabase-backed access control and operational state across clinical and hospitality workflows, including reservations, rooms, allocations, and guest requests."
+      "Built seven role workspaces for patients, doctors, admins, laboratory technicians, pharmacy staff, hotel guests, and hotel staff, connecting lab orders and reports, pharmacy fulfillment, and discharge into authenticated downloadable PDFs.",
+      "Moved token numbers, slot availability, queue position, and room allocation into Postgres triggers and functions behind Row Level Security, with role checks that fail closed and self-signup limited to patients and guests.",
+      "Redesigned every role on shadcn/ui with semantic light and dark tokens, separate care and stay accents, and a shared motion scale for overlays and page reveals."
     ],
-    technologies: ["Next.js", "TypeScript", "Supabase", "PostgreSQL", "shadcn/ui", "pdf-lib"],
+    technologies: ["Next.js", "TypeScript", "Supabase", "PostgreSQL", "shadcn/ui", "Motion", "pdf-lib"],
     githubUrl: "https://github.com/meetmehta0685/AurumQMS",
     evidence: "live",
     liveUrl: "https://aurum-qms.vercel.app",
-    theme: { field: "#c4ead9", ink: "#0d2219", soft: "#2f5144", accent: "#0f7a58" }
+    theme: { field: "#0b0c0f", ink: "#f2f3f6", soft: "#9b9ea6", accent: "#6197ff" }
   },
   {
     slug: "go-reverse-proxy",

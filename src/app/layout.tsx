@@ -12,12 +12,31 @@ const jost = Jost({
   display: "swap",
 });
 
+const siteTitle = "Meet Mehta · Full-stack developer";
+const siteDescription = "Meet Mehta is a full-stack developer in Ahmedabad, India, building software for operational work: food rescue, interview practice, IELTS preparation, and clinical operations.";
+
 export const metadata: Metadata = {
+  // Share previews need absolute URLs. Change this if the site moves to its own domain.
+  metadataBase: new URL("https://meet-mehta-portfolio.vercel.app"),
   title: {
-    default: "Meet Mehta, full-stack developer",
+    default: siteTitle,
     template: "%s · Meet Mehta",
   },
-  description: "Meet Mehta is a full-stack developer in Ahmedabad, India, building software for operational work: food rescue, interview practice, IELTS preparation, and clinical operations.",
+  description: siteDescription,
+  alternates: { canonical: "/" },
+  openGraph: {
+    type: "website",
+    siteName: "Meet Mehta",
+    title: siteTitle,
+    description: siteDescription,
+    url: "/",
+    locale: "en_IN",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: siteTitle,
+    description: siteDescription,
+  },
   keywords: ["Meet Mehta", "Portfolio", "Software Engineer", "Full-Stack Developer", "Adani University", "Next.js", "TypeScript", "Supabase", "AI-ML"],
 };
 

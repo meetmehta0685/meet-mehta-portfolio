@@ -11,6 +11,8 @@ type Props = { params: Promise<{ slug: string }> };
 
 export const dynamicParams = false;
 
+const shareImage = { url: "/opengraph-image.jpg", width: 1200, height: 630, alt: "Meet Mehta, full-stack developer in Ahmedabad" };
+
 export function generateStaticParams() {
   return projects.map((project) => ({ slug: project.slug }));
 }
@@ -18,7 +20,16 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const project = projects.find((p) => p.slug === slug);
-  return project ? { title: project.name, description: project.summary } : {};
+  if (!project) return {};
+  const title = `${project.name} · Meet Mehta`;
+  return {
+    title: project.name,
+    description: project.summary,
+    alternates: { canonical: `/work/${slug}` },
+    // Setting openGraph here replaces the root one, so the share card is named again.
+    openGraph: { title, description: project.summary, url: `/work/${slug}`, images: [shareImage] },
+    twitter: { card: "summary_large_image", title, description: project.summary, images: [shareImage] },
+  };
 }
 
 function LiveModules({ project }: { project: LiveProject }) {

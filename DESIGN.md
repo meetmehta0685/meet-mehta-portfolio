@@ -1,50 +1,40 @@
 ---
 name: "Meet Mehta Portfolio"
-description: "A quiet gallery modelled on Adobe Portfolio's Mercedes theme: grey header band, centred logo, a two-up grid of covers, centred pages."
+description: "Modelled on Adobe Portfolio's Marta theme: a fixed coral bar, a full-screen photo greeting, a tight three-up grid named on hover, centred bold project pages."
 colors:
-  bg: "#ffffff"
-  band: "#f9f9f9"
-  ink: "#222222"
-  title: "#444444"
-  soft: "#6b6b6b"
-  faint: "#8a8a8a"
-  line: "#e8e8e8"
-  button: "#ececec"
+  coral: "#f75a56"
+  coral-deep: "#c43c38 (buttons and coral text on white, for contrast)"
+  ink: "#111111"
+  soft: "#6e6e6e"
+  faint: "#8f8f8f"
+  line: "#ececec"
 typography:
-  family: "Hanken Grotesk 300, 400 and 500, Helvetica Neue and Arial fallbacks; system monospace for real source code only"
-  body: "17px, weight 300, leading 1.5"
-  caption: "18px, weight 300 (cover titles)"
-  page-title: "clamp(32px, 4vw, 40px), weight 300"
-  menu: "clamp(32px, 6vw, 40px), weight 300"
+  family: "Jost 400, 500 and 700 (a Futura-style geometric sans); system monospace for real source code only"
+  nav: "20px, lowercase; the current page in 700"
+  logo: "27px, 700, lowercase"
+  masthead: "clamp(38px, 7.4vw, 86px), 700"
+  page-title: "clamp(34px, 4.6vw, 46px), 700"
+  labels: "18px, 700, uppercase"
 rounded:
-  all: "0, except the round logo portrait and phone screenshots"
-spacing:
-  side: "clamp(16px, 5vw, 42px)"
-  gap: "clamp(20px, 4.5vw, 38px)"
-  max: "1280px grid, 1100px project modules, 680px reading column"
+  all: "0, except pill buttons, the round back-to-top button and phone screenshots"
 ---
 
 # Design system
 
+Project, biography and contact facts live in `src/data/`. Pages only lay them out.
+
 ## Idea
 
-The site follows the structure of Adobe Portfolio's Mercedes theme. Typography stays sans-serif (the theme's slab captions are replaced by Hanken Grotesk Light) per the brand commitment in `PRODUCT.md`.
-
-- **Header.** A light grey band with a round portrait and the name centred, and a hamburger on the right. The hamburger opens a full-screen white menu with large light links (Work, About, Contact) and three icons.
-- **Work (`/`).** One short centred line, then a two-column grid of covers (one column under 640px). Each cover is a 4:3 tile in the project's own field colour with its desktop screen bleeding off the right edge and its phone screen overlapping. Code projects show their source excerpt in the same position. A light centred caption sits below.
-- **Project (`/work/[slug]`).** A centred title, kind, and grey summary, then full-width modules: the desktop screen with its scroll loop fading in over it, and the phone screen on the project's field colour. Code projects show the excerpt, caption, and source link on their field colour. Then "What I built", the stack, buttons, previous and next, and "↑ Back to Top".
-- **About.** Centred bio, two portraits, then Experience, Education, Certifications, Stack, and Résumé.
-- **Contact.** The theme's form (Name, Email Address, Message, Submit). With no mail server, Submit opens the visitor's email app with the message filled in. Direct email, phone with Copy, and links sit below.
-
-`evidence` in `src/data/projects.ts` decides which a project shows: `"live"` projects need captures in `public/work/`, `"code"` projects need an `excerpt` copied from the repository.
-
-## Colour
-
-White page, grey band, greys for text. The only strong colour comes from each project's `theme` (field, ink, soft, accent), used on its cover and its field modules, matched to that project's own interface.
+- **Coral bar.** Fixed, 70px. Lowercase work, about and contact on the left, "meet mehta" centred, GitHub, LinkedIn and email on the right. Under 760px it becomes the name and a hamburger that opens a full-screen coral menu.
+- **Work (`/`).** A full-screen greeting: the booth portrait in grayscale, multiplied into coral, under "Hi! I'm Meet Mehta. I'm a full-stack developer based in Ahmedabad." and a nudging chevron. Then a gapless grid of covers, three across (two under 1000px, one under 640px). Hovering a cover fills it with coral and names the project. Touch screens show the name on a dark fade instead.
+- **Project (`/work/[slug]`).** Bold centred title, grey summary, small uppercase labels above full-width modules (desktop screen with its loop, phone screen on the project's field colour, or the code excerpt). Then uppercase "What I built" and "Built with", pill buttons, and previous and next.
+- **About.** Two portraits side by side as a banner, then left-aligned uppercase sections: About, Experience, Education, What I use, Certifications, Résumé, and a coral "get in touch" line.
+- **Contact.** "Say hello!", an underlined form whose send button opens the visitor's email app, then email, phone with Copy, and links.
+- **Back to top.** A round translucent button, bottom right, appears after 400px of scroll and turns coral on hover.
 
 ## Motion
 
-Each page fades up 8px on load. The menu fades and its links rise in a short stagger. Covers drift their screens on hover. The logo portrait scales slightly on hover. The loop video plays only while on screen and never under reduced motion. Reduced motion collapses every transition.
+Pages fade in. The greeting rises in. Cover overlays fade and lift on hover. The loop video plays only while on screen. Reduced motion collapses all of it.
 
 ## Assets
 

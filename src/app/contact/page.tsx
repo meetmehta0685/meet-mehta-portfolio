@@ -9,7 +9,7 @@ export default function ContactPage() {
   return (
     <article className="contact">
       <header className="page-head">
-        <h1 className="page-title">Contact</h1>
+        <h1 className="page-title">Say hello!</h1>
         <p className="page-desc">Have a role or project in mind? Email is the fastest way to reach me. I usually respond within 24 hours.</p>
       </header>
 
@@ -17,17 +17,17 @@ export default function ContactPage() {
 
       <section className="contact-direct" aria-label="Other ways to reach me">
         <p>
-          <a href={`mailto:${contact.email}`}>{contact.email}</a>
+          <a href={`mailto:${contact.email}`} className="contact-email">{contact.email}</a>
         </p>
         <p>
           <a href={`tel:${contact.phoneHref}`}>{contact.phone}</a>
           <CopyButton value={contact.phoneHref} label="phone number" />
         </p>
         <p className="contact-links">
-          <a href={contact.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a>
-          <a href={contact.github} target="_blank" rel="noopener noreferrer">GitHub</a>
+          <a href={contact.linkedin} target="_blank" rel="noopener noreferrer">linkedin</a>
+          <a href={contact.github} target="_blank" rel="noopener noreferrer">github</a>
           {resumes.map((resume) => (
-            <a key={resume.href} href={resume.href} download={resume.file}>{resume.label}</a>
+            <a key={resume.href} href={resume.href} download={resume.file}>{resume.label.toLowerCase()}</a>
           ))}
         </p>
       </section>

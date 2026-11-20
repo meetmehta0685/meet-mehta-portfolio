@@ -31,8 +31,8 @@ export default function ContactForm({ to }: { to: string }) {
         <textarea name="message" rows={6} placeholder="Your Message" required />
       </label>
       <div className="form-foot">
-        <button type="submit" className="button">Submit</button>
-        <p className="form-note">Submitting opens your email app with the message ready to send.</p>
+        <button type="submit" className="button">send</button>
+        <p className="form-note">Sending opens your email app with the message ready to send.</p>
       </div>
     </form>
   );

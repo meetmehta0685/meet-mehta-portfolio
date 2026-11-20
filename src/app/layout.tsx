@@ -1,14 +1,14 @@
 import type { Metadata, Viewport } from "next";
-import { Hanken_Grotesk } from "next/font/google";
+import { Jost } from "next/font/google";
 import SiteHeader from "./components/SiteHeader";
-import { SocialIcons } from "./components/Icons";
-import { contact } from "@/data/profile";
+import BackToTop from "./components/BackToTop";
 import "./globals.css";
 
-const hanken = Hanken_Grotesk({
-  variable: "--font-hanken",
+// Jost is a geometric sans in the Futura tradition, matching the theme's bold lowercase voice.
+const jost = Jost({
+  variable: "--font-jost",
   subsets: ["latin"],
-  weight: ["300", "400", "500"],
+  weight: ["400", "500", "700"],
   display: "swap",
 });
 
@@ -22,7 +22,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#f9f9f9",
+  themeColor: "#f75a56",
 };
 
 export default function RootLayout({
@@ -31,14 +31,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={hanken.variable}>
+    <html lang="en" className={jost.variable}>
       <body>
         <SiteHeader />
         <main className="site-main">{children}</main>
-        <footer className="site-footer">
-          <SocialIcons email={contact.email} github={contact.github} linkedin={contact.linkedin} />
-          <p>© 2026 Meet Mehta · {contact.city}</p>
-        </footer>
+        <footer className="site-footer">© 2026 Meet Mehta · Ahmedabad, India</footer>
+        <BackToTop />
       </body>
     </html>
   );

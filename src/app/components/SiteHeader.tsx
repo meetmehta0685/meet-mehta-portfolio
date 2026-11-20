@@ -1,16 +1,15 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { contact } from "@/data/profile";
 import { SocialIcons } from "./Icons";
 
 const pages = [
-  { href: "/", label: "Work" },
-  { href: "/about", label: "About" },
-  { href: "/contact", label: "Contact" },
+  { href: "/", label: "work" },
+  { href: "/about", label: "about" },
+  { href: "/contact", label: "contact" },
 ];
 
 const isActive = (pathname: string, href: string) =>
@@ -39,12 +38,28 @@ export default function SiteHeader() {
     };
   }, [open]);
 
+  const links = (onNavigate?: () => void, first?: boolean) =>
+    pages.map((page, i) => (
+      <Link
+        key={page.href}
+        ref={first && i === 0 ? firstLink : undefined}
+        href={page.href}
+        aria-current={isActive(pathname, page.href) ? "page" : undefined}
+        onClick={onNavigate}
+      >
+        {page.label}
+      </Link>
+    ));
+
   return (
     <header id="top" className="site-header">
-      <Link href="/" className="logo" aria-label="Meet Mehta, home">
-        <Image src="/me/avatar.jpg" alt="" width={192} height={192} className="logo-mark" unoptimized preload />
-        <span className="logo-name">Meet Mehta</span>
-      </Link>
+      <nav className="header-nav" aria-label="Primary">{links()}</nav>
+
+      <Link href="/" className="logo">meet mehta</Link>
+
+      <div className="header-social">
+        <SocialIcons email={contact.email} github={contact.github} linkedin={contact.linkedin} />
+      </div>
 
       <button
         ref={opener}
@@ -66,20 +81,7 @@ export default function SiteHeader() {
           <i />
           <i />
         </button>
-        <nav aria-label="Primary">
-          {pages.map((page, i) => (
-            <Link
-              key={page.href}
-              ref={i === 0 ? firstLink : undefined}
-              href={page.href}
-              className="menu-link"
-              aria-current={isActive(pathname, page.href) ? "page" : undefined}
-              onClick={() => setOpen(false)}
-            >
-              {page.label}
-            </Link>
-          ))}
-        </nav>
+        <nav aria-label="Primary">{links(() => setOpen(false), true)}</nav>
         <SocialIcons email={contact.email} github={contact.github} linkedin={contact.linkedin} />
       </div>
     </header>
